@@ -1,0 +1,268 @@
+{
+  "properties": [
+    {
+      "id": 1,
+      "title": "Glass Peak A-Frame",
+      "location": "Snoqualmie, Washington",
+      "price": 245,
+      "rating": 4.92,
+      "reviews": 87,
+      "badge": "Trending",
+      "badgeType": "trending",
+      "image": "https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?w=600&auto=format&fit=crop",
+      "images": [
+        "https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=900&auto=format&fit=crop"
+      ],
+      "category": "A-Frames",
+      "description": "Experience the magic of this ultra-modern glass A-frame cabin nestled in a snowy pine forest at twilight. Floor-to-ceiling windows bring the wilderness inside while the warm interior provides a cozy sanctuary for the modern explorer seeking luxury in nature.",
+      "amenities": [
+        {"icon": "forest", "label": "Forest view", "color": "#fde047"},
+        {"icon": "wifi", "label": "Fast wifi – 500 Mbps", "color": "#fe4d87"},
+        {"icon": "kitchen", "label": "Full kitchen", "color": "#4aede8"},
+        {"icon": "hot_tub", "label": "Private hot tub", "color": "#a1a1aa"},
+        {"icon": "fireplace", "label": "Indoor fireplace", "color": "#a1a1aa"},
+        {"icon": "pets", "label": "Pets allowed", "color": "#a1a1aa"},
+        {"icon": "ac_unit", "label": "Air conditioning", "color": "#a1a1aa"},
+        {"icon": "local_parking", "label": "Free parking", "color": "#a1a1aa"}
+      ],
+      "host": { "name": "Sarah", "avatar": "https://i.pravatar.cc/100?img=1", "rating": 4.98, "reviews": 234, "superhost": true, "years": 3 },
+      "priceColor": "teal",
+      "guests": 4, "bedrooms": 2, "beds": 3, "baths": 2,
+      "lat": 47.5, "lng": -121.8,
+      "highlights": ["Great location", "Superhost", "Rare find"]
+    },
+    {
+      "id": 2,
+      "title": "Azure Cliffside Suite",
+      "location": "Santorini, Greece",
+      "price": 580,
+      "rating": 5.0,
+      "reviews": 212,
+      "badge": "Unique",
+      "badgeType": "unique",
+      "image": "https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=600&auto=format&fit=crop",
+      "images": [
+        "https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1465101162946-4377e57745c3?w=900&auto=format&fit=crop"
+      ],
+      "category": "Villas",
+      "description": "A whitewashed villa perched on the Santorini cliffs with unparalleled views of the Mediterranean. Watch the iconic sunset from your private infinity pool as the sky turns shades of orange and gold. Pure Aegean magic at its finest.",
+      "amenities": [
+        {"icon": "pool", "label": "Infinity pool", "color": "#4aede8"},
+        {"icon": "wifi", "label": "Fast wifi", "color": "#fe4d87"},
+        {"icon": "kitchen", "label": "Gourmet kitchen", "color": "#4aede8"},
+        {"icon": "local_bar", "label": "Wine cellar", "color": "#fde047"},
+        {"icon": "beach_access", "label": "Beach access", "color": "#fe4d87"},
+        {"icon": "spa", "label": "Spa & sauna", "color": "#4aede8"}
+      ],
+      "host": { "name": "Nikos", "avatar": "https://i.pravatar.cc/100?img=12", "rating": 5.0, "reviews": 456, "superhost": true, "years": 6 },
+      "priceColor": "yellow",
+      "guests": 6, "bedrooms": 3, "beds": 4, "baths": 3,
+      "lat": 36.4, "lng": 25.4,
+      "highlights": ["5-star rating", "Superhost", "Stunning views"]
+    },
+    {
+      "id": 3,
+      "title": "The Canopy Nest",
+      "location": "Portland, Oregon",
+      "price": 195,
+      "rating": 4.88,
+      "reviews": 143,
+      "badge": "New",
+      "badgeType": "new-spot",
+      "image": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600&auto=format&fit=crop",
+      "images": [
+        "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=900&auto=format&fit=crop"
+      ],
+      "category": "Treehouses",
+      "description": "A luxury multi-level treehouse built into giant sequoias, suspended 30 feet above the forest floor. Rope bridges connect the platforms, warm lanterns light your path at dusk, and the views of the Oregon wilderness are unmatched.",
+      "amenities": [
+        {"icon": "forest", "label": "Forest view", "color": "#fde047"},
+        {"icon": "wifi", "label": "Wifi", "color": "#fe4d87"},
+        {"icon": "deck", "label": "Wraparound deck", "color": "#4aede8"},
+        {"icon": "pets", "label": "Pets allowed", "color": "#a1a1aa"},
+        {"icon": "fireplace", "label": "Wood stove", "color": "#a1a1aa"},
+        {"icon": "kitchen", "label": "Kitchenette", "color": "#a1a1aa"}
+      ],
+      "host": { "name": "Alex", "avatar": "https://i.pravatar.cc/100?img=3", "rating": 4.95, "reviews": 89, "superhost": true, "years": 4 },
+      "priceColor": "pink",
+      "guests": 2, "bedrooms": 1, "beds": 1, "baths": 1,
+      "lat": 45.5, "lng": -122.6,
+      "highlights": ["Superhost", "Pet friendly", "New listing"]
+    },
+    {
+      "id": 4,
+      "title": "Cosmic Desert Dome",
+      "location": "Joshua Tree, California",
+      "price": 310,
+      "rating": 4.95,
+      "reviews": 178,
+      "badge": "Rare Find",
+      "badgeType": "rare",
+      "image": "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600&auto=format&fit=crop",
+      "images": [
+        "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1517672651691-24622a91b550?w=900&auto=format&fit=crop"
+      ],
+      "category": "Glamping",
+      "description": "A futuristic geodesic dome in the heart of Joshua Tree. Stargaze from your private climate-controlled dome with giant boulders as your neighbors and the Milky Way as your ceiling. An out-of-this-world experience.",
+      "amenities": [
+        {"icon": "star", "label": "Private stargazing deck", "color": "#fde047"},
+        {"icon": "wifi", "label": "Wifi", "color": "#fe4d87"},
+        {"icon": "outdoor_grill", "label": "Outdoor BBQ kitchen", "color": "#4aede8"},
+        {"icon": "hot_tub", "label": "Hot tub", "color": "#a1a1aa"},
+        {"icon": "ac_unit", "label": "Climate controlled", "color": "#a1a1aa"},
+        {"icon": "local_parking", "label": "Parking", "color": "#a1a1aa"}
+      ],
+      "host": { "name": "Maya", "avatar": "https://i.pravatar.cc/100?img=25", "rating": 4.97, "reviews": 312, "superhost": true, "years": 5 },
+      "priceColor": "teal",
+      "guests": 2, "bedrooms": 1, "beds": 1, "baths": 1,
+      "lat": 33.9, "lng": -116.0,
+      "highlights": ["Rare find", "Superhost", "Desert views"]
+    },
+    {
+      "id": 5,
+      "title": "The Glass Triangle",
+      "location": "Tromsø, Norway",
+      "price": 245,
+      "rating": 4.92,
+      "reviews": 67,
+      "badge": "Trending",
+      "badgeType": "trending",
+      "image": "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=600&auto=format&fit=crop",
+      "images": [
+        "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1465101162946-4377e57745c3?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=900&auto=format&fit=crop"
+      ],
+      "category": "Cabins",
+      "description": "A modern A-frame cabin in a snowy forest at twilight, with warm lights glowing from large triangular windows. Wake up to the Aurora Borealis and end your day in the outdoor barrel sauna under the stars.",
+      "amenities": [
+        {"icon": "wifi", "label": "Wifi", "color": "#fe4d87"},
+        {"icon": "hot_tub", "label": "Outdoor barrel sauna", "color": "#4aede8"},
+        {"icon": "kitchen", "label": "Full kitchen", "color": "#4aede8"},
+        {"icon": "fireplace", "label": "Fireplace", "color": "#fde047"},
+        {"icon": "local_parking", "label": "Free parking", "color": "#a1a1aa"}
+      ],
+      "host": { "name": "Erik", "avatar": "https://i.pravatar.cc/100?img=7", "rating": 4.9, "reviews": 145, "superhost": false, "years": 2 },
+      "priceColor": "teal",
+      "guests": 4, "bedrooms": 2, "beds": 2, "baths": 1,
+      "lat": 69.6, "lng": 18.9,
+      "highlights": ["Northern lights", "Trending spot"]
+    },
+    {
+      "id": 6,
+      "title": "Lakeside Sanctuary",
+      "location": "Geiranger, Norway",
+      "price": 189,
+      "rating": 4.88,
+      "reviews": 201,
+      "badge": "Rare Find",
+      "badgeType": "rare",
+      "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600&auto=format&fit=crop",
+      "images": [
+        "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&auto=format&fit=crop"
+      ],
+      "category": "Cabins",
+      "description": "A rustic log cabin with a stone fireplace overlooking a misty Norwegian lake. Includes a private dock, rowing boat, and a traditional wood-fired sauna. The ultimate fjord country escape.",
+      "amenities": [
+        {"icon": "kitchen", "label": "Full kitchen", "color": "#4aede8"},
+        {"icon": "directions_boat", "label": "Private dock & boat", "color": "#fde047"},
+        {"icon": "fireplace", "label": "Stone fireplace", "color": "#fe4d87"},
+        {"icon": "wifi", "label": "Wifi", "color": "#fe4d87"},
+        {"icon": "local_parking", "label": "Parking", "color": "#a1a1aa"}
+      ],
+      "host": { "name": "Ingrid", "avatar": "https://i.pravatar.cc/100?img=20", "rating": 4.93, "reviews": 178, "superhost": true, "years": 4 },
+      "priceColor": "yellow",
+      "guests": 6, "bedrooms": 3, "beds": 4, "baths": 2,
+      "lat": 62.1, "lng": 7.2,
+      "highlights": ["Superhost", "Private dock", "Fjord views"]
+    },
+    {
+      "id": 7,
+      "title": "Pine Heights Retreat",
+      "location": "Hardanger, Norway",
+      "price": 310,
+      "rating": 5.0,
+      "reviews": 45,
+      "badge": "New",
+      "badgeType": "new-spot",
+      "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&auto=format&fit=crop",
+      "images": [
+        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=900&auto=format&fit=crop"
+      ],
+      "category": "Treehouses",
+      "description": "A luxury treehouse high in emerald pines with a wraparound deck and spiral staircase. Views of the Hardanger fjord will take your breath away. Brand new construction with all the modern comforts.",
+      "amenities": [
+        {"icon": "deck", "label": "Wrap-around deck", "color": "#fde047"},
+        {"icon": "wifi", "label": "Wifi", "color": "#fe4d87"},
+        {"icon": "kitchen", "label": "Kitchenette", "color": "#4aede8"},
+        {"icon": "local_parking", "label": "Parking", "color": "#a1a1aa"}
+      ],
+      "host": { "name": "Lars", "avatar": "https://i.pravatar.cc/100?img=9", "rating": 5.0, "reviews": 22, "superhost": false, "years": 1 },
+      "priceColor": "pink",
+      "guests": 2, "bedrooms": 1, "beds": 1, "baths": 1,
+      "lat": 60.3, "lng": 6.8,
+      "highlights": ["Perfect rating", "New listing", "Treehouse"]
+    },
+    {
+      "id": 8,
+      "title": "Cliffside Modern",
+      "location": "Lofoten, Norway",
+      "price": 420,
+      "rating": 4.95,
+      "reviews": 156,
+      "badge": "Top Rated",
+      "badgeType": "top",
+      "image": "https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=600&auto=format&fit=crop",
+      "images": [
+        "https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?w=900&auto=format&fit=crop"
+      ],
+      "category": "Villas",
+      "description": "A minimalist architectural villa with floor-to-ceiling glass walls overlooking a dramatic Lofoten coastline. Scandinavian design meets raw Norwegian nature in this oceanfront masterpiece.",
+      "amenities": [
+        {"icon": "pool", "label": "Heated pool", "color": "#4aede8"},
+        {"icon": "pets", "label": "Pets allowed", "color": "#fde047"},
+        {"icon": "wifi", "label": "Fast wifi", "color": "#fe4d87"},
+        {"icon": "kitchen", "label": "Gourmet kitchen", "color": "#4aede8"},
+        {"icon": "hot_tub", "label": "Outdoor hot tub", "color": "#a1a1aa"},
+        {"icon": "local_parking", "label": "Parking", "color": "#a1a1aa"}
+      ],
+      "host": { "name": "Astrid", "avatar": "https://i.pravatar.cc/100?img=30", "rating": 4.98, "reviews": 289, "superhost": true, "years": 5 },
+      "priceColor": "teal",
+      "guests": 8, "bedrooms": 4, "beds": 5, "baths": 3,
+      "lat": 68.2, "lng": 14.4,
+      "highlights": ["Top rated", "Superhost", "Oceanfront"]
+    }
+  ],
+  "categories": [
+    {"id": "all", "label": "All", "icon": "explore"},
+    {"id": "cabins", "label": "Cabins", "icon": "cabin"},
+    {"id": "treehouses", "label": "Treehouses", "icon": "park"},
+    {"id": "villas", "label": "Villas", "icon": "villa"},
+    {"id": "a-frames", "label": "A-Frames", "icon": "change_history"},
+    {"id": "glamping", "label": "Glamping", "icon": "holiday_village"},
+    {"id": "castles", "label": "Castles", "icon": "fort"},
+    {"id": "islands", "label": "Islands", "icon": "waves"}
+  ]
+}

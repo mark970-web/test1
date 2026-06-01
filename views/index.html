@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VacayYay – Adventure is Calling</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<!-- ═══ Navbar ═══ -->
+<header class="vacay-navbar">
+  <div class="d-flex justify-content-between align-items-center px-4 py-3">
+    <div class="d-flex align-items-center gap-lg-4 gap-3">
+      <a href="/" class="brand-logo">VacayYay</a>
+      <nav class="d-none d-lg-flex align-items-center gap-4">
+        <a href="/search?category=cabins"     class="vacay-nav-link">Cabins</a>
+        <a href="/search?category=castles"    class="vacay-nav-link">Castles</a>
+        <a href="/search?category=treehouses" class="vacay-nav-link">Treehouses</a>
+        <a href="/search?category=villas"     class="vacay-nav-link">Villas</a>
+        <a href="/search?category=glamping"   class="vacay-nav-link">Glamping</a>
+        <a href="/search?category=a-frames"   class="vacay-nav-link">A-Frames</a>
+      </nav>
+    </div>
+    <div class="d-flex align-items-center gap-3">
+      <a href="/list-property" class="d-none d-lg-block text-decoration-none fw-bold" style="color:var(--clr-muted);font-family:var(--font-headline)">Host your home</a>
+      <div class="nav-user-pill" onclick="location.href='/dashboard'">
+        <span class="material-symbols-outlined text-white">menu</span>
+        <span id="nav-user-badge">
+          <span class="rounded-circle d-flex align-items-center justify-content-center" style="width:32px;height:32px;background:#fde047;border:2px solid #000">
+            <span class="material-symbols-outlined" style="font-size:18px;color:#000">person</span>
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ Main ═══ -->
+<main style="max-width:1440px;margin:0 auto" class="px-3 px-md-4 py-5">
+
+  <!-- Search Bar -->
+  <section class="mb-5 d-flex flex-column align-items-center">
+    <div class="search-bar w-100" style="max-width:820px">
+      <div class="search-segment flex-grow-1">
+        <span class="search-segment-label where">Where</span>
+        <input type="text" class="search-input" placeholder="Search destinations" id="s-where">
+      </div>
+      <div class="search-divider d-none d-md-block"></div>
+      <div class="search-segment flex-grow-1">
+        <span class="search-segment-label when">When</span>
+        <input type="date" class="search-input" id="s-when">
+      </div>
+      <div class="search-divider d-none d-md-block"></div>
+      <div class="search-segment flex-grow-1">
+        <span class="search-segment-label who">Who</span>
+        <input type="text" class="search-input" placeholder="Add guests" id="s-who">
+      </div>
+      <button class="search-btn border-0" onclick="doSearch()">
+        <span class="material-symbols-outlined text-white" style="font-size:1.75rem;font-variation-settings:'wght' 700">search</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- Category Picker -->
+  <section class="cat-scroll hide-scrollbar mb-5" id="cat-picker">
+    <div class="category-item active" onclick="filterCat(event,'all')">
+      <div class="category-icon" style="background:#fde047"><span class="material-symbols-outlined" style="color:#000;font-size:1.75rem;font-variation-settings:'FILL' 1">rocket_launch</span></div>
+      <div class="category-label">Out of this world</div>
+    </div>
+    <div class="category-item" onclick="filterCat(event,'')">
+      <div class="category-icon" style="background:#fe4d87;border-color:#fff"><span class="material-symbols-outlined" style="color:#fff;font-size:1.75rem">beach_access</span></div>
+      <div class="category-label">Beach bums</div>
+    </div>
+    <div class="category-item" onclick="filterCat(event,'')">
+      <div class="category-icon" style="background:#4aede8;border-color:#fff"><span class="material-symbols-outlined" style="color:#000;font-size:1.75rem">pets</span></div>
+      <div class="category-label">Pet friendly</div>
+    </div>
+    <div class="category-item" onclick="filterCat(event,'cabins')">
+      <div class="category-icon" style="background:#fff;border-color:#000"><span class="material-symbols-outlined" style="color:#000;font-size:1.75rem">fireplace</span></div>
+      <div class="category-label">Cozy vibes</div>
+    </div>
+    <div class="category-item" onclick="filterCat(event,'castles')">
+      <div class="category-icon" style="background:#ffb1c2;border-color:#fff"><span class="material-symbols-outlined" style="color:#000;font-size:1.75rem">castle</span></div>
+      <div class="category-label">Castles</div>
+    </div>
+    <div class="category-item" onclick="filterCat(event,'villas')">
+      <div class="category-icon" style="background:#006a67;border-color:#fff"><span class="material-symbols-outlined" style="color:#fff;font-size:1.75rem">pool</span></div>
+      <div class="category-label">Epic Pools</div>
+    </div>
+    <div class="category-item" onclick="filterCat(event,'treehouses')">
+      <div class="category-icon" style="background:#edc22e;border-color:#fff"><span class="material-symbols-outlined" style="color:#000;font-size:1.75rem">forest</span></div>
+      <div class="category-label">Treehouses</div>
+    </div>
+    <div class="category-item" onclick="filterCat(event,'glamping')">
+      <div class="category-icon" style="background:#3f3f46;border-color:#fff"><span class="material-symbols-outlined" style="color:#fff;font-size:1.75rem">landscape</span></div>
+      <div class="category-label">Mountains</div>
+    </div>
+  </section>
+
+  <!-- Section Header -->
+  <div class="d-flex justify-content-between align-items-end mb-4">
+    <div>
+      <h1 class="font-headline fw-900 text-white mb-1" style="font-size:clamp(1.8rem,4vw,2.75rem);letter-spacing:-0.02em;line-height:1.1">Epic spots for you</h1>
+      <p class="mb-0" style="color:var(--clr-muted);font-size:1.05rem">Hand-picked adventures by our scout team</p>
+    </div>
+    <button class="btn-yay-outline" onclick="showFilters()">
+      <span class="material-symbols-outlined">tune</span> Filters
+    </button>
+  </div>
+
+  <!-- Property Grid -->
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4" id="property-grid">
+    <div class="col-12 d-flex justify-content-center py-5">
+      <div class="spinner-yay"></div>
+    </div>
+  </div>
+
+  <!-- Featured Bento -->
+  <section class="mt-5">
+    <div class="row g-4 align-items-stretch">
+      <div class="col-12 col-md-8">
+        <div class="featured-big h-100">
+          <img src="https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=1200&auto=format&fit=crop" alt="Nordic Lakeside Dreams">
+          <div class="featured-overlay">
+            <span class="prop-badge trending mb-3" style="position:static;display:inline-block;font-size:12px">COLLECTION OF THE WEEK</span>
+            <h2 class="font-headline text-white fw-900 mb-3" style="font-size:clamp(1.6rem,3vw,2.5rem);letter-spacing:-0.02em">Nordic Lakeside Dreams</h2>
+            <p class="mb-4" style="color:rgba(255,255,255,.7);font-size:1.05rem;max-width:480px">Experience silence like never before in our curated Scandinavian retreats.</p>
+            <button class="btn-yay-yellow" onclick="location.href='/search?q=norway'">Explore Collection</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4 d-flex flex-column gap-4">
+        <div class="bento-host">
+          <span class="material-symbols-outlined text-white mb-3" style="font-size:3.5rem">celebration</span>
+          <h3 class="font-headline text-white fw-800 mb-2" style="font-size:1.6rem">Host Your Space</h3>
+          <p class="mb-4" style="color:rgba(255,255,255,.75);font-size:.95rem">Earn up to $3,400/mo sharing your home with adventurers.</p>
+          <button onclick="location.href='/list-property'" class="rounded-pill border-0 px-4 py-2 fw-800 text-white" style="background:#000;font-family:var(--font-body);text-transform:uppercase;letter-spacing:.08em;cursor:pointer;font-size:13px">Start Hosting</button>
+        </div>
+        <div class="bento-verified">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width:3rem;height:3rem;background:#000">
+              <span class="material-symbols-outlined" style="color:#fde047">verified</span>
+            </div>
+            <h3 class="font-headline fw-700 text-dark mb-0" style="font-size:1.15rem">Yay-Verified Protection</h3>
+          </div>
+          <p class="text-dark mb-0" style="font-size:.95rem;opacity:.75">Every booking includes $1M in damage protection and 24/7 support.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══ Footer ═══ -->
+<footer class="vacay-footer">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-4">
+    <div>
+      <span class="brand-logo d-block mb-1" style="font-size:1.3rem">VacayYay</span>
+      <p class="mb-0" style="color:var(--clr-subtle);font-family:var(--font-headline);font-size:.875rem">© 2025 VacayYay Inc. Adventure is calling.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Mobile Bottom Nav -->
+<nav class="bottom-nav">
+  <a href="/dashboard" class="bn-item"><span class="material-symbols-outlined">favorite</span>Wishlists</a>
+  <a href="/dashboard" class="bn-item"><span class="material-symbols-outlined">travel_explore</span>Trips</a>
+  <a href="/dashboard" class="bn-item"><span class="material-symbols-outlined">account_circle</span>Profile</a>
+</nav>
+
+<!-- Filters Modal -->
+<div class="modal fade modal-yay" id="filtersModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title font-headline fw-800">Filters</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <label class="login-label">Price range per night</label>
+        <div class="d-flex gap-3 mb-4">
+          <input type="number" class="login-input mb-0" placeholder="Min $" id="f-min" style="max-width:160px">
+          <input type="number" class="login-input mb-0" placeholder="Max $" id="f-max" style="max-width:160px">
+        </div>
+        <label class="login-label mt-3">Sort by</label>
+        <select class="login-input" id="f-sort" style="cursor:pointer">
+          <option value="">Default</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="rating">Top Rated</option>
+        </select>
+      </div>
+      <div class="modal-footer gap-2">
+        <button class="btn-yay-outline" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-yay-primary" onclick="applyFilters()">Apply Filters</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/main.js?v=2"></script>
+<script>
+let activeFilters = {};
+
+async function loadGrid(params = {}) {
+  const grid = document.getElementById('property-grid');
+  grid.innerHTML = '<div class="col-12 d-flex justify-content-center py-5"><div class="spinner-yay"></div></div>';
+  try {
+    const qs  = new URLSearchParams(params).toString();
+    const res = await fetch('/api/properties' + (qs ? '?' + qs : ''));
+    const { properties } = await res.json();
+    grid.innerHTML = properties.length
+      ? properties.map(buildPropertyCard).join('')
+      : '<div class="col-12 text-center py-5" style="color:var(--clr-muted)">No properties found.</div>';
+  } catch {
+    grid.innerHTML = '<div class="col-12 text-center py-5" style="color:var(--clr-muted)">Failed to load properties.</div>';
+  }
+}
+
+function filterCat(e, cat) {
+  document.querySelectorAll('.category-item').forEach(c => c.classList.remove('active'));
+  e.currentTarget.classList.add('active');
+  activeFilters.category = cat || undefined;
+  loadGrid(activeFilters);
+}
+
+function doSearch() {
+  const where  = document.getElementById('s-where').value.trim();
+  const when   = document.getElementById('s-when').value;
+  const guests = document.getElementById('s-who').value.trim();
+  const params = new URLSearchParams();
+  if (where)  params.set('q', where);
+  if (when)   params.set('checkin', when);
+  if (guests) params.set('guests', guests);
+  window.location.href = '/search?' + params;
+}
+
+function showFilters() {
+  new bootstrap.Modal(document.getElementById('filtersModal')).show();
+}
+
+function applyFilters() {
+  const min  = document.getElementById('f-min').value;
+  const max  = document.getElementById('f-max').value;
+  const sort = document.getElementById('f-sort').value;
+  if (min)  activeFilters.minPrice = min; else delete activeFilters.minPrice;
+  if (max)  activeFilters.maxPrice = max; else delete activeFilters.maxPrice;
+  if (sort) activeFilters.sort = sort;    else delete activeFilters.sort;
+  bootstrap.Modal.getInstance(document.getElementById('filtersModal')).hide();
+  loadGrid(activeFilters);
+}
+
+// Allow pressing Enter in search inputs
+document.querySelectorAll('.search-input').forEach(inp =>
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); })
+);
+
+// Sync saved spots from server before building cards so hearts are correct
+if (APP.token) {
+  syncWishlist().then(() => loadGrid());
+} else {
+  loadGrid();
+}
+</script>
+</body>
+</html>

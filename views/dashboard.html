@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VacayYay – Dashboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<!-- ═══ Navbar ═══ -->
+<header class="vacay-navbar">
+  <div class="d-flex justify-content-between align-items-center px-4 py-3">
+    <div class="d-flex align-items-center gap-4">
+      <a href="/" class="brand-logo">VacayYay</a>
+      <nav class="d-none d-md-flex align-items-center gap-4">
+        <a href="/search?category=cabins"     class="vacay-nav-link">Cabins</a>
+        <a href="/search?category=castles"    class="vacay-nav-link">Castles</a>
+        <a href="/search?category=treehouses" class="vacay-nav-link">Treehouses</a>
+        <a href="/search?category=villas"     class="vacay-nav-link">Villas</a>
+      </nav>
+    </div>
+    <div class="d-flex align-items-center gap-3">
+      <a href="/list-property" class="d-none d-lg-block text-decoration-none fw-bold" style="color:var(--clr-muted);font-family:var(--font-headline)">Host your home</a>
+      <div class="nav-user-pill">
+        <span class="material-symbols-outlined text-white">menu</span>
+        <span id="nav-user-badge">
+          <span class="rounded-circle d-flex align-items-center justify-content-center" style="width:32px;height:32px;background:#fde047;border:2px solid #000">
+            <span class="material-symbols-outlined" style="font-size:16px;color:#000">person</span>
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ Main ═══ -->
+<main class="container-xl px-3 px-md-4 py-5">
+
+  <!-- Greeting -->
+  <div class="mb-4">
+    <h1 class="font-headline fw-900 mb-1" style="font-size:clamp(2rem,5vw,3rem);color:#fde047;letter-spacing:-0.02em">
+      Hey, <span id="dash-name">Adventurer</span>! 👋
+    </h1>
+    <p style="color:var(--clr-muted);font-size:1.1rem">Ready for your next grand adventure?</p>
+  </div>
+
+  <!-- Tabs -->
+  <div class="d-flex gap-2 mb-5 flex-wrap">
+    <button class="dash-tab active" id="tab-trips"   onclick="switchTab('trips')">
+      <span class="material-symbols-outlined" style="font-size:1.1rem">travel_explore</span> Trips
+    </button>
+    <button class="dash-tab" id="tab-hosting" onclick="switchTab('hosting')">
+      <span class="material-symbols-outlined" style="font-size:1.1rem">home</span> My Listings
+    </button>
+  </div>
+
+  <div class="row g-4 align-items-start">
+
+    <!-- ── Left: Main content ── -->
+    <div class="col-12 col-lg-8">
+
+      <!-- ══ Trips Tab ══ -->
+      <div id="content-trips">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2 class="font-headline fw-800 text-white mb-0" style="font-size:1.75rem">My Trips</h2>
+          <button class="btn-yay-outline" onclick="location.href='/search'">Explore more</button>
+        </div>
+
+        <div id="trips-loading" class="d-flex justify-content-center py-5">
+          <div class="spinner-yay"></div>
+        </div>
+
+        <div id="trips-empty" class="d-none">
+          <div class="text-center p-5 rounded-yay-lg" style="background:#3f3f46;border:3px solid #52525b;border-radius:var(--r-lg)">
+            <span class="material-symbols-outlined mb-3 d-block" style="font-size:4rem;color:var(--clr-subtle)">travel_explore</span>
+            <h3 class="font-headline fw-800 text-white mb-2">No trips yet</h3>
+            <p style="color:var(--clr-muted)">Time to book your first adventure!</p>
+            <button class="btn-yay-primary mt-3" onclick="location.href='/search'">
+              <span class="material-symbols-outlined me-1" style="font-size:1rem">search</span>
+              Start Exploring
+            </button>
+          </div>
+          <div class="mt-4 p-4 rounded-yay-lg border-yay neo-shadow d-flex align-items-center gap-4" style="background:#3f3f46;cursor:pointer;border-radius:var(--r-lg)" onclick="location.href='/'">
+            <span class="material-symbols-outlined" style="font-size:3rem;color:var(--clr-primary)">travel_explore</span>
+            <div>
+              <h3 class="font-headline fw-800 text-white mb-1" style="font-size:1.15rem">Discover your next stay</h3>
+              <p class="mb-0" style="color:var(--clr-muted);font-size:.9rem">Browse unique spots worldwide.</p>
+            </div>
+            <span class="material-symbols-outlined ms-auto" style="color:var(--clr-muted);font-size:1.5rem">arrow_forward</span>
+          </div>
+        </div>
+
+        <div id="trips-list" class="d-none d-flex flex-column gap-3"></div>
+      </div>
+
+      <!-- ══ My Listings Tab ══ -->
+      <div id="content-hosting" style="display:none">
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+          <h2 class="font-headline fw-800 text-white mb-0" style="font-size:1.75rem">My Listings</h2>
+          <button class="btn-yay-yellow" onclick="location.href='/list-property'">
+            <span class="material-symbols-outlined" style="font-size:1rem">add</span> List a Property
+          </button>
+        </div>
+
+        <div id="listings-loading" class="d-flex justify-content-center py-5">
+          <div class="spinner-yay"></div>
+        </div>
+        <div id="listings-error" class="d-none mb-3 p-3 rounded-3" style="background:rgba(186,26,26,.2);border:2px solid #ba1a1a;color:#ff8080;font-weight:700;font-size:.9rem"></div>
+
+        <div id="listings-empty" class="d-none">
+          <div class="text-center p-5 rounded-yay-lg" style="background:#3f3f46;border:3px solid #52525b;border-radius:var(--r-lg)">
+            <span class="material-symbols-outlined mb-3 d-block" style="font-size:4rem;color:var(--clr-subtle)">home</span>
+            <h3 class="font-headline fw-800 text-white mb-2">No listings yet</h3>
+            <p style="color:var(--clr-muted)">Share your space with adventurers and start earning.</p>
+            <button class="btn-yay-primary mt-3" onclick="location.href='/list-property'">
+              <span class="material-symbols-outlined me-1" style="font-size:1rem">add</span>
+              List Your First Property
+            </button>
+          </div>
+        </div>
+
+        <div id="listings-grid" class="d-none d-flex flex-column gap-4"></div>
+      </div>
+
+    </div>
+
+    <!-- ── Right: Sidebar ── -->
+    <div class="col-12 col-lg-4 d-flex flex-column gap-4">
+
+      <!-- Profile Card -->
+      <div class="profile-card">
+        <div class="d-flex align-items-center gap-3 mb-4 pb-3" style="border-bottom:2px solid #3f3f46">
+          <div id="dash-avatar-wrap" class="position-relative flex-shrink-0" style="width:4rem;height:4rem">
+            <label for="avatar-file-input" title="Change photo"
+              style="position:absolute;bottom:-4px;right:-4px;width:1.5rem;height:1.5rem;background:#fde047;border:2px solid #000;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2">
+              <span class="material-symbols-outlined" style="font-size:13px;color:#000">edit</span>
+            </label>
+            <input type="file" id="avatar-file-input" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" style="display:none" onchange="uploadAvatar(this)">
+          </div>
+          <div>
+            <h3 class="font-headline fw-800 text-white mb-0" style="font-size:1.15rem" id="dash-name-card">Adventure</h3>
+            <p class="mb-0" style="color:var(--clr-muted);font-size:.85rem" id="dash-email-card">Ready to explore</p>
+          </div>
+        </div>
+        <div id="avatar-msg" class="d-none mb-3 p-2 rounded-3" style="background:rgba(186,26,26,.2);border:2px solid #ba1a1a;color:#ff8080;font-weight:700;font-size:.85rem"></div>
+
+        <h3 class="font-headline fw-800 text-white mb-3" style="font-size:1.3rem">Account</h3>
+        <div class="profile-menu-item" onclick="location.href='/list-property'">
+          <span class="material-symbols-outlined" style="color:#fde047">home</span>
+          <span class="fw-700">List a Property</span>
+          <span class="material-symbols-outlined ms-auto" style="color:var(--clr-subtle)">chevron_right</span>
+        </div>
+        <div class="profile-menu-item" onclick="location.href='/account'">
+          <span class="material-symbols-outlined" style="color:#4aede8">manage_accounts</span>
+          <span class="fw-700">Account Settings</span>
+          <span class="material-symbols-outlined ms-auto" style="color:var(--clr-subtle)">chevron_right</span>
+        </div>
+        <div class="mt-4">
+          <button class="w-100 py-3 rounded-3 fw-900 border-0" style="border:2px solid var(--clr-secondary)!important;color:var(--clr-secondary);background:transparent;font-family:var(--font-body);cursor:pointer;transition:all .2s;border:2px solid var(--clr-secondary)"
+            data-action="logout"
+            onmouseover="this.style.background='var(--clr-secondary)';this.style.color='#fff'"
+            onmouseout="this.style.background='transparent';this.style.color='var(--clr-secondary)'">
+            Sign Out
+          </button>
+        </div>
+      </div>
+
+      <!-- Saved Spots -->
+      <div class="profile-card">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h3 class="font-headline fw-800 text-white mb-0" style="font-size:1.3rem">Saved Spots</h3>
+          <span class="fw-800" style="color:var(--clr-secondary)" id="wishlist-count">0 Total</span>
+        </div>
+        <div class="row row-cols-2 g-2" id="saved-grid"></div>
+        <button class="btn-yay-outline w-100 mt-3 justify-content-center" onclick="location.href='/'">Browse more</button>
+      </div>
+
+      <!-- Stats Card -->
+      <div class="profile-card">
+        <h3 class="font-headline fw-800 text-white mb-4" style="font-size:1.3rem">My Adventure Stats</h3>
+        <div class="row row-cols-2 g-3">
+          <div class="col text-center p-3 rounded-3" style="background:#3f3f46">
+            <div class="font-headline fw-900" style="font-size:2rem;color:#fde047" id="stats-trips">0</div>
+            <div style="color:var(--clr-muted);font-size:.8rem;text-transform:uppercase;font-weight:700">Trips taken</div>
+          </div>
+          <div class="col text-center p-3 rounded-3" style="background:#3f3f46">
+            <div class="font-headline fw-900" style="font-size:2rem;color:var(--clr-secondary)" id="stats-wishlist">0</div>
+            <div style="color:var(--clr-muted);font-size:.8rem;text-transform:uppercase;font-weight:700">Saved spots</div>
+          </div>
+          <div class="col text-center p-3 rounded-3" style="background:#3f3f46">
+            <div class="font-headline fw-900" style="font-size:2rem;color:var(--clr-tertiary)" id="stats-listings">0</div>
+            <div style="color:var(--clr-muted);font-size:.8rem;text-transform:uppercase;font-weight:700">My listings</div>
+          </div>
+          <div class="col text-center p-3 rounded-3" style="background:#3f3f46">
+            <div class="font-headline fw-900" style="font-size:2rem;color:#fde047" id="stats-nights">0</div>
+            <div style="color:var(--clr-muted);font-size:.8rem;text-transform:uppercase;font-weight:700">Nights away</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<!-- Footer -->
+<footer class="vacay-footer">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-4">
+    <div>
+      <span class="brand-logo d-block mb-1" style="font-size:1.3rem">VacayYay</span>
+      <p class="mb-0" style="color:var(--clr-subtle);font-family:var(--font-headline);font-size:.875rem">© 2025 VacayYay Inc. Adventure is calling.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Mobile Bottom Nav -->
+<nav class="bottom-nav">
+  <a href="/dashboard" class="bn-item"><span class="material-symbols-outlined">favorite</span>Wishlists</a>
+  <a href="/dashboard" class="bn-item"><span class="material-symbols-outlined">travel_explore</span>Trips</a>
+  <a href="/dashboard" class="bn-item active"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">account_circle</span>Profile</a>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/main.js?v=2"></script>
+<script>
+const PLACEHOLDER_SPOTS = [
+  'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=200&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=200&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=200&auto=format&fit=crop',
+];
+
+document.addEventListener('DOMContentLoaded', async () => {
+  // Personalize with user data
+  if (!APP.user) {
+    window.location.href = '/login';
+    return;
+  }
+
+  document.querySelectorAll('#dash-name, #dash-name-card').forEach(el => el.textContent = APP.user.name);
+  const emailEl = document.getElementById('dash-email-card');
+  if (emailEl) emailEl.textContent = APP.user.email;
+
+  setDashAvatar(APP.user);
+  updateNavAuth();
+
+  renderSavedSpots();
+  document.getElementById('stats-wishlist').textContent = APP.wishlist.length;
+  document.getElementById('wishlist-count').textContent = `${APP.wishlist.length} Total`;
+
+  loadTrips();
+  // Load listings on startup too, so the "My listings" stat is correct from the Trips tab
+  loadMyListings();
+
+  // Check for tab param
+  const tab = new URLSearchParams(location.search).get('tab');
+  if (tab === 'hosting') switchTab('hosting');
+});
+
+// ── Avatar helpers ──────────────────────────────────────────────────────────
+function showAvatarMsg(msg) {
+  const el = document.getElementById('avatar-msg');
+  el.textContent = msg;
+  el.classList.remove('d-none');
+  setTimeout(() => el.classList.add('d-none'), 4000);
+}
+
+// ── Avatar ─────────────────────────────────────────────────────────────────
+function setDashAvatar(user) {
+  const wrap = document.getElementById('dash-avatar-wrap');
+  if (!wrap) return;
+  wrap.querySelector('img, .av-initials')?.remove();
+  const el = document.createElement(user.avatar ? 'img' : 'div');
+  if (user.avatar) {
+    el.src = user.avatar; el.alt = user.name;
+    el.className = 'rounded-circle';
+    el.style.cssText = 'width:4rem;height:4rem;object-fit:cover;border:4px solid #fde047';
+  } else {
+    el.className = 'av-initials rounded-circle d-flex align-items-center justify-content-center fw-900';
+    el.style.cssText = 'width:4rem;height:4rem;background:#fde047;border:4px solid #fde047;color:#000;font-family:var(--font-headline);font-size:1.5rem';
+    el.textContent = user.name[0].toUpperCase();
+  }
+  wrap.prepend(el);
+}
+
+async function uploadAvatar(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (!/\.(jpg|jpeg|png|webp)$/i.test(file.name)) { showAvatarMsg('Only JPG, PNG, or WEBP images allowed.'); input.value = ''; return; }
+  if (file.size > 10 * 1024 * 1024) { showAvatarMsg('Image must be under 10 MB.'); input.value = ''; return; }
+
+  const label = input.previousElementSibling;
+  label.innerHTML = '<span class="spinner-border spinner-border-sm" style="color:#000;width:12px;height:12px;border-width:2px"></span>';
+
+  const formData = new FormData();
+  formData.append('avatar', file);
+  try {
+    const res  = await fetch('/api/user/avatar', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${APP.token}` },
+      body: formData,
+    });
+    const data = await res.json();
+    if (!res.ok) { showAvatarMsg(data.error || 'Upload failed.'); return; }
+    APP.user.avatar = data.avatar;
+    saveUser(APP.user, null);
+    setDashAvatar(APP.user);
+    updateNavAuth();
+  } catch {
+    showAvatarMsg('Upload failed. Please try again.');
+  } finally {
+    label.innerHTML = '<span class="material-symbols-outlined" style="font-size:13px;color:#000">edit</span>';
+    input.value = '';
+  }
+}
+
+// ── Tabs ───────────────────────────────────────────────────────────────────
+let listingsLoaded = false;
+
+function switchTab(tab) {
+  document.getElementById('content-trips').style.display   = tab === 'trips'   ? '' : 'none';
+  document.getElementById('content-hosting').style.display = tab === 'hosting' ? '' : 'none';
+  document.getElementById('tab-trips').className   = 'dash-tab' + (tab === 'trips'   ? ' active' : '');
+  document.getElementById('tab-hosting').className = 'dash-tab' + (tab === 'hosting' ? ' active' : '');
+  if (tab === 'hosting' && !listingsLoaded) loadMyListings();
+}
+
+// ── Trips ──────────────────────────────────────────────────────────────────
+async function loadTrips() {
+  try {
+    const res  = await fetch('/api/bookings', { headers: authHeaders() });
+    const data = await res.json();
+    const bookings = data.bookings || [];
+
+    document.getElementById('trips-loading').classList.add('d-none');
+
+    const totalNights = bookings.reduce((sum, b) => sum + (b.nights || 0), 0);
+    document.getElementById('stats-trips').textContent  = bookings.length;
+    document.getElementById('stats-nights').textContent = totalNights;
+
+    if (!bookings.length) {
+      document.getElementById('trips-empty').classList.remove('d-none');
+      return;
+    }
+
+    const list = document.getElementById('trips-list');
+    list.classList.remove('d-none');
+    list.innerHTML = bookings.map(b => buildTripCard(b)).join('');
+  } catch {
+    document.getElementById('trips-loading').innerHTML =
+      `<p style="color:var(--clr-secondary)">Failed to load trips.</p>`;
+  }
+}
+
+function buildTripCard(b) {
+  const isPast     = new Date(b.checkout) < new Date();
+  const statusLabel = isPast ? 'Completed' : 'Upcoming';
+  const statusColor = isPast ? 'var(--clr-muted)' : '#4ade80';
+  const ci = new Date(b.checkin  + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  const co = new Date(b.checkout + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  return `
+  <div class="trip-card-sm" onclick="location.href='/property/${b.property_id}'" style="cursor:pointer">
+    <img src="${b.image}" alt="${b.title}" class="rounded-3 flex-shrink-0"
+         style="width:5.5rem;height:5.5rem;object-fit:cover;border:2px solid #3f3f46">
+    <div class="flex-grow-1" style="min-width:0">
+      <h4 class="font-headline fw-800 text-white mb-1" style="font-size:1.05rem">${b.title}</h4>
+      <p class="mb-1" style="color:var(--clr-muted);font-size:.875rem">
+        <span class="material-symbols-outlined" style="font-size:.85rem;vertical-align:middle">location_on</span>
+        ${b.location}
+      </p>
+      <p class="mb-1" style="color:var(--clr-muted);font-size:.8rem">${ci} &ndash; ${co} &middot; ${b.nights} night${b.nights !== 1 ? 's' : ''}</p>
+      <div class="d-flex align-items-center gap-2 mt-1">
+        <span class="amenity-tag" style="color:${statusColor};border-color:${statusColor}">${statusLabel}</span>
+        <span style="color:var(--clr-muted);font-size:.8rem">$${b.total?.toLocaleString() || '—'} total</span>
+        <span style="color:var(--clr-subtle);font-size:.75rem">${b.booking_ref}</span>
+      </div>
+    </div>
+    <span class="material-symbols-outlined flex-shrink-0" style="color:var(--clr-subtle);font-size:1.75rem">arrow_forward</span>
+  </div>`;
+}
+
+// ── My Listings ────────────────────────────────────────────────────────────
+function renderListings(props) {
+  document.getElementById('listings-loading').classList.add('d-none');
+  document.getElementById('stats-listings').textContent = props.length;
+  const grid = document.getElementById('listings-grid');
+  if (!props.length) {
+    grid.classList.add('d-none');
+    document.getElementById('listings-empty').classList.remove('d-none');
+    return;
+  }
+  document.getElementById('listings-empty').classList.add('d-none');
+  grid.classList.remove('d-none');
+  grid.innerHTML = props.map(p => buildListingCard(p)).join('');
+}
+
+async function loadMyListings() {
+  listingsLoaded = true;
+  const cacheKey = `vy_listings_${APP.user.id}`;
+
+  // Show cached data immediately to avoid loading flash
+  const cached = localStorage.getItem(cacheKey);
+  if (cached) {
+    try { renderListings(JSON.parse(cached)); } catch {}
+  }
+
+  try {
+    const res   = await fetch('/api/my-properties', { headers: authHeaders() });
+    const data  = await res.json();
+    const props = data.properties || [];
+    localStorage.setItem(cacheKey, JSON.stringify(props));
+    renderListings(props);
+  } catch {
+    if (!cached) {
+      document.getElementById('listings-loading').innerHTML =
+        `<p style="color:var(--clr-secondary)">Failed to load listings.</p>`;
+    }
+  }
+}
+
+function buildListingCard(p) {
+  return `
+  <div class="profile-card" id="listing-${p.id}">
+    <div class="d-flex gap-4 align-items-start flex-wrap flex-sm-nowrap">
+      <img src="${p.image}" alt="${p.title}" class="rounded-3 flex-shrink-0"
+           style="width:110px;height:90px;object-fit:cover;border:3px solid #3f3f46;cursor:pointer"
+           onclick="location.href='/property/${p.id}'">
+      <div class="flex-grow-1" style="min-width:0">
+        <div class="d-flex justify-content-between align-items-start gap-2 mb-1">
+          <h4 class="font-headline fw-800 text-white mb-0" style="font-size:1.1rem;cursor:pointer" onclick="location.href='/property/${p.id}'">${p.title}</h4>
+          <span class="prop-badge new-spot flex-shrink-0" style="position:static">$${p.price}/night</span>
+        </div>
+        <p class="mb-2" style="color:var(--clr-muted);font-size:.875rem">
+          <span class="material-symbols-outlined" style="font-size:.9rem;vertical-align:middle">location_on</span>
+          ${p.location} &middot; ${p.category}
+        </p>
+        <div class="d-flex flex-wrap gap-2 mb-3">
+          <span class="amenity-tag">${p.guests} guests</span>
+          <span class="amenity-tag">${p.bedrooms} bed${p.bedrooms !== 1 ? 'rooms' : 'room'}</span>
+          <span class="amenity-tag">${p.baths} bath${p.baths !== 1 ? 's' : ''}</span>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="btn-yay-yellow" style="font-size:12px;padding:.4rem .9rem" onclick="location.href='/property/${p.id}'">
+            <span class="material-symbols-outlined" style="font-size:.9rem">visibility</span> View
+          </button>
+          <button style="background:#3f3f46;color:#ff8080;border:2px solid #ff8080;border-radius:var(--r);padding:.4rem .9rem;font-family:var(--font-body);font-weight:800;font-size:12px;cursor:pointer;transition:all .2s"
+            onclick="deleteListing(${p.id})"
+            onmouseover="this.style.background='rgba(186,26,26,.3)'"
+            onmouseout="this.style.background='#3f3f46'">
+            <span class="material-symbols-outlined" style="font-size:.9rem">delete</span> Remove
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function showListingsError(msg) {
+  const el = document.getElementById('listings-error');
+  el.textContent = msg;
+  el.classList.remove('d-none');
+  setTimeout(() => el.classList.add('d-none'), 5000);
+}
+
+async function deleteListing(id) {
+  if (!confirm('Remove this listing? This cannot be undone.')) return;
+
+  // Find and disable the button for visual feedback
+  const card = document.getElementById(`listing-${id}`);
+  const btn  = card?.querySelector('[onclick^="deleteListing"]');
+  if (btn) { btn.disabled = true; btn.style.opacity = '.5'; }
+
+  try {
+    const res  = await fetch(`/api/properties/${id}`, { method: 'DELETE', headers: authHeaders() });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      showListingsError(data.error || 'Failed to remove listing. Please try again.');
+      if (btn) { btn.disabled = false; btn.style.opacity = ''; }
+      return;
+    }
+
+    card?.remove();
+
+    // Update listings cache
+    const cacheKey = `vy_listings_${APP.user.id}`;
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) {
+      const props = JSON.parse(cached).filter(p => p.id !== id);
+      localStorage.setItem(cacheKey, JSON.stringify(props));
+    }
+
+    const remaining = document.querySelectorAll('#listings-grid > div').length;
+    document.getElementById('stats-listings').textContent = remaining;
+    if (!remaining) {
+      document.getElementById('listings-grid').classList.add('d-none');
+      document.getElementById('listings-empty').classList.remove('d-none');
+    }
+  } catch {
+    showListingsError('Network error. Please check your connection and try again.');
+    if (btn) { btn.disabled = false; btn.style.opacity = ''; }
+  }
+}
+
+// ── Saved Spots ────────────────────────────────────────────────────────────
+async function renderSavedSpots() {
+  const grid = document.getElementById('saved-grid');
+  const wl   = APP.wishlist;
+  if (!wl.length) {
+    grid.innerHTML = PLACEHOLDER_SPOTS.map(src => `
+      <div class="col"><div class="saved-spot">
+        <img src="${src}" alt="Saved spot" loading="lazy">
+        <div class="saved-overlay"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">favorite</span></div>
+      </div></div>`).join('') + `
+      <div class="col"><div class="saved-spot d-flex align-items-center justify-content-center" style="background:#3f3f46;cursor:pointer" onclick="location.href='/'">
+        <span class="material-symbols-outlined" style="color:var(--clr-subtle);font-size:2rem">add</span>
+      </div></div>`;
+    return;
+  }
+  try {
+    const res   = await fetch('/api/properties');
+    const { properties } = await res.json();
+    const saved = properties.filter(p => wl.includes(p.id)).slice(0, 3);
+    grid.innerHTML = saved.map(p => `
+      <div class="col"><div class="saved-spot" onclick="location.href='/property/${p.id}'" title="${p.title}">
+        <img src="${p.image}" alt="${p.title}" loading="lazy">
+        <div class="saved-overlay"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">favorite</span></div>
+      </div></div>`).join('') + `
+      <div class="col"><div class="saved-spot d-flex align-items-center justify-content-center" style="background:#3f3f46;cursor:pointer" onclick="location.href='/'">
+        <span class="material-symbols-outlined" style="color:var(--clr-subtle);font-size:2rem">add</span>
+      </div></div>`;
+  } catch {
+    grid.innerHTML = `<div class="col-12 text-center" style="color:var(--clr-muted)">Could not load saved spots.</div>`;
+  }
+}
+</script>
+</body>
+</html>

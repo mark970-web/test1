@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VacayYay – Search Results</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    @media (max-width:767px) { body { padding-bottom: 80px; } }
+  </style>
+</head>
+<body>
+
+<!-- ═══ Navbar ═══ -->
+<header class="vacay-navbar">
+  <div class="d-flex justify-content-between align-items-center px-4 py-3 gap-3">
+    <!-- Logo -->
+    <a href="/" class="brand-logo flex-shrink-0" style="font-size:1.5rem">VacayYay</a>
+    <!-- Compact search bar -->
+    <div class="search-bar flex-grow-1 d-none d-lg-flex" style="max-width:560px;box-shadow:none">
+      <div class="search-segment flex-grow-1" style="padding:.25rem 1rem">
+        <span class="search-segment-label where">Where</span>
+        <input type="text" class="search-input" id="s-where" placeholder="Where to?" style="font-size:.95rem">
+      </div>
+      <div class="search-divider"></div>
+      <div class="search-segment" style="padding:.25rem 1rem">
+        <span class="search-segment-label when">When</span>
+        <input type="date" class="search-input" id="s-when" style="font-size:.95rem">
+      </div>
+      <div class="search-divider"></div>
+      <div class="search-segment" style="padding:.25rem 1rem">
+        <span class="search-segment-label who">Who</span>
+        <input type="text" class="search-input" id="s-who" placeholder="Guests" style="font-size:.95rem;width:80px">
+      </div>
+      <button class="search-btn border-0" onclick="doSearch()" style="width:44px;height:44px">
+        <span class="material-symbols-outlined text-white" style="font-size:1.4rem;font-variation-settings:'wght' 700">search</span>
+      </button>
+    </div>
+    <!-- Right nav -->
+    <nav class="d-none d-md-flex align-items-center gap-3">
+      <a href="/dashboard" class="vacay-nav-link">Wishlists</a>
+      <a href="/dashboard" class="vacay-nav-link">Trips</a>
+      <div style="width:2px;height:32px;background:#3f3f46"></div>
+      <button class="btn-yay-yellow px-3 py-2" onclick="location.href='/list-property'" style="font-size:13px;padding:.45rem 1rem">Host your home</button>
+      <div class="nav-user-pill" onclick="location.href='/dashboard'">
+        <span id="nav-user-badge">
+          <span class="rounded-circle d-flex align-items-center justify-content-center" style="width:32px;height:32px;background:#fde047;border:2px solid #000">
+            <span class="material-symbols-outlined" style="font-size:16px;color:#000">person</span>
+          </span>
+        </span>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- ═══ Main ═══ -->
+<div style="max-width:1440px;margin:0 auto">
+
+  <!-- Results panel -->
+  <section class="results-panel px-4 py-4" id="results-panel">
+
+    <!-- Category chips -->
+    <div class="d-flex gap-2 mb-4 overflow-auto hide-scrollbar pb-2">
+      <button class="cat-chip active" data-cat="" onclick="filterCat(this,'')">
+        <span class="material-symbols-outlined" style="font-size:16px">explore</span> All
+      </button>
+      <button class="cat-chip" data-cat="cabins" onclick="filterCat(this,'cabins')">
+        <span class="material-symbols-outlined" style="font-size:16px">cabin</span> Cabins
+      </button>
+      <button class="cat-chip" data-cat="castles" onclick="filterCat(this,'castles')">
+        <span class="material-symbols-outlined" style="font-size:16px">fort</span> Castles
+      </button>
+      <button class="cat-chip" data-cat="treehouses" onclick="filterCat(this,'treehouses')">
+        <span class="material-symbols-outlined" style="font-size:16px">park</span> Treehouses
+      </button>
+      <button class="cat-chip" data-cat="villas" onclick="filterCat(this,'villas')">
+        <span class="material-symbols-outlined" style="font-size:16px">villa</span> Villas
+      </button>
+      <button class="cat-chip" data-cat="glamping" onclick="filterCat(this,'glamping')">
+        <span class="material-symbols-outlined" style="font-size:16px">holiday_village</span> Glamping
+      </button>
+      <button class="cat-chip" data-cat="a-frames" onclick="filterCat(this,'a-frames')">
+        <span class="material-symbols-outlined" style="font-size:16px">change_history</span> A-Frames
+      </button>
+    </div>
+
+    <!-- Count + filters -->
+    <div class="d-flex justify-content-between align-items-end mb-4">
+      <div>
+        <h1 class="font-headline fw-800 text-white mb-1" style="font-size:1.75rem" id="results-title">Searching…</h1>
+        <p class="mb-0" style="color:var(--clr-muted);font-size:.9rem">Review local taxes and fees before booking.</p>
+      </div>
+      <button class="btn-yay-outline" onclick="showFilters()">
+        <span class="material-symbols-outlined">tune</span> Filters
+      </button>
+    </div>
+
+    <!-- Cards (2-column) -->
+    <div class="row row-cols-1 row-cols-md-2 g-0 g-md-3" id="results-grid" style="gap:0">
+      <div class="col-12 d-flex justify-content-center py-5">
+        <div class="spinner-yay"></div>
+      </div>
+    </div>
+
+  </section>
+
+
+</div>
+
+<!-- Mobile Bottom Nav -->
+<nav class="bottom-nav">
+  <a href="/dashboard" class="bn-item"><span class="material-symbols-outlined">favorite</span>Wishlists</a>
+  <a href="/dashboard" class="bn-item"><span class="material-symbols-outlined">travel_explore</span>Trips</a>
+  <a href="/dashboard" class="bn-item"><span class="material-symbols-outlined">account_circle</span>Profile</a>
+</nav>
+
+<!-- Filters Modal -->
+<div class="modal fade modal-yay" id="filtersModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title font-headline fw-800">Filters</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <label class="login-label">Price range per night</label>
+        <div class="d-flex gap-3 mb-4">
+          <input type="number" class="login-input mb-0" placeholder="Min $" id="f-min" style="max-width:160px">
+          <input type="number" class="login-input mb-0" placeholder="Max $" id="f-max" style="max-width:160px">
+        </div>
+        <label class="login-label mt-3">Sort by</label>
+        <select class="login-input" id="f-sort" style="cursor:pointer">
+          <option value="">Default</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="rating">Top Rated</option>
+        </select>
+      </div>
+      <div class="modal-footer gap-2">
+        <button class="btn-yay-outline" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-yay-primary" onclick="applyFilters()">Apply</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/main.js?v=2"></script>
+<script>
+let activeFilters = {};
+let allResults    = [];
+
+// Parse URL params
+const urlParams = new URLSearchParams(location.search);
+if (urlParams.get('q'))        activeFilters.q        = urlParams.get('q');
+if (urlParams.get('checkin'))  activeFilters.checkin  = urlParams.get('checkin');
+if (urlParams.get('guests'))   activeFilters.guests   = urlParams.get('guests');
+if (urlParams.get('category')) {
+  activeFilters.category = urlParams.get('category');
+  // Pre-select chip
+  document.addEventListener('DOMContentLoaded', () => {
+    const chip = document.querySelector(`.cat-chip[data-cat="${urlParams.get('category')}"]`);
+    if (chip) { document.querySelector('.cat-chip.active').classList.remove('active'); chip.classList.add('active'); }
+  });
+}
+
+// Populate search inputs
+document.addEventListener('DOMContentLoaded', () => {
+  if (activeFilters.q)   document.getElementById('s-where').value = activeFilters.q;
+  loadResults();
+});
+
+async function loadResults(params = {}) {
+  const grid = document.getElementById('results-grid');
+  grid.innerHTML = '<div class="col-12 d-flex justify-content-center py-5"><div class="spinner-yay"></div></div>';
+  try {
+    const merged = { ...activeFilters, ...params };
+    const qs     = new URLSearchParams(merged).toString();
+    const res    = await fetch('/api/search' + (qs ? '?' + qs : ''));
+    const data   = await res.json();
+    allResults   = data.properties;
+    document.getElementById('results-title').textContent =
+      `${data.total} Unique Stay${data.total !== 1 ? 's' : ''} ${data.query ? 'in ' + capitalize(data.query) : ''}`;
+    grid.innerHTML = allResults.length
+      ? allResults.map(p => `<div class="col">${buildResultCard(p)}</div>`).join('')
+      : '<div class="col-12 text-center py-5" style="color:var(--clr-muted)">No properties found for this search.</div>';
+  } catch {
+    grid.innerHTML = '<div class="col-12 text-center py-5" style="color:var(--clr-muted)">Search failed. Try again.</div>';
+  }
+}
+
+function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+function filterCat(el, cat) {
+  document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  if (cat) activeFilters.category = cat; else delete activeFilters.category;
+  loadResults();
+}
+
+function doSearch() {
+  const where = document.getElementById('s-where').value.trim();
+  const when  = document.getElementById('s-when').value;
+  const who   = document.getElementById('s-who').value.trim();
+  if (where) activeFilters.q = where; else delete activeFilters.q;
+  if (when)  activeFilters.checkin = when; else delete activeFilters.checkin;
+  if (who)   activeFilters.guests = who;   else delete activeFilters.guests;
+  loadResults();
+}
+
+function showFilters() { new bootstrap.Modal(document.getElementById('filtersModal')).show(); }
+
+function applyFilters() {
+  const min  = document.getElementById('f-min').value;
+  const max  = document.getElementById('f-max').value;
+  const sort = document.getElementById('f-sort').value;
+  if (min)  activeFilters.minPrice = min; else delete activeFilters.minPrice;
+  if (max)  activeFilters.maxPrice = max; else delete activeFilters.maxPrice;
+  if (sort) activeFilters.sort = sort;    else delete activeFilters.sort;
+  bootstrap.Modal.getInstance(document.getElementById('filtersModal')).hide();
+  loadResults();
+}
+
+</script>
+</body>
+</html>

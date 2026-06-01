@@ -1,0 +1,21 @@
+# Dependencies (Render runs `npm install` and compiles native modules for the right Node version)
+node_modules/
+
+# Local SQLite database — re-seeded from data/properties.json on startup.
+# Render's free tier has an ephemeral filesystem, so this never persists anyway.
+data/*.db
+data/*.db-shm
+data/*.db-wal
+
+# Runtime user uploads (ephemeral on free tier)
+public/uploads/*
+!public/uploads/.gitkeep
+
+# Secrets / env
+.env
+.env.*
+
+# Logs & OS junk
+npm-debug.log*
+*.log
+.DS_Store

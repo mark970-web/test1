@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VacayYay – List Your Space</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<!-- ═══ Navbar ═══ -->
+<header class="vacay-navbar">
+  <div class="d-flex justify-content-between align-items-center px-4 py-3">
+    <a href="/" class="brand-logo">VacayYay</a>
+    <div class="d-flex align-items-center gap-3">
+      <a href="/dashboard" class="btn-yay-outline text-decoration-none">My Dashboard</a>
+      <div class="nav-user-pill" onclick="location.href='/dashboard'">
+        <span class="material-symbols-outlined text-white">menu</span>
+        <span id="nav-user-badge">
+          <span class="rounded-circle d-flex align-items-center justify-content-center" style="width:32px;height:32px;background:#fde047;border:2px solid #000">
+            <span class="material-symbols-outlined" style="font-size:18px;color:#000">person</span>
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ Main ═══ -->
+<main class="container-xl px-3 px-md-4 py-5">
+
+  <!-- Hero -->
+  <div class="row mb-5 align-items-center">
+    <div class="col">
+      <div class="d-flex align-items-center gap-3 mb-2">
+        <span class="material-symbols-outlined" style="font-size:2.5rem;color:#fde047">home</span>
+        <h1 class="font-headline fw-900 mb-0" style="font-size:clamp(2rem,5vw,3rem);color:#fde047;letter-spacing:-0.02em">List Your Space</h1>
+      </div>
+      <p style="color:var(--clr-muted);font-size:1.1rem;max-width:540px">Share your amazing property with adventurers worldwide and earn up to $3,400/month.</p>
+    </div>
+    <div class="col-auto d-none d-md-block">
+      <a href="/dashboard?tab=hosting" class="btn-yay-outline text-decoration-none">
+        <span class="material-symbols-outlined">arrow_back</span> My Listings
+      </a>
+    </div>
+  </div>
+
+  <div class="row g-5">
+
+    <!-- ── Form ── -->
+    <div class="col-12 col-lg-8">
+
+      <!-- ── Section 1: Photos ── -->
+      <div class="profile-card mb-4">
+        <div class="d-flex align-items-center gap-3 mb-2">
+          <div class="step-badge" style="background:var(--clr-secondary)">1</div>
+          <div>
+            <h2 class="font-headline fw-800 text-white mb-0" style="font-size:1.4rem">Property Photos</h2>
+            <p class="mb-0" style="color:var(--clr-muted);font-size:.85rem">Accepted: JPG, JPEG, PNG, GIF, WEBP &middot; Max 10 MB each</p>
+          </div>
+        </div>
+
+        <!-- Main photo -->
+        <label class="login-label mt-4">Main Photo <span style="color:var(--clr-secondary)">*</span></label>
+        <div class="upload-zone upload-zone-lg" id="zone-main" onclick="triggerFile('file-main')">
+          <input type="file" id="file-main" accept=".jpg,.jpeg,.png,.gif,.webp,image/jpeg,image/png,image/gif,image/webp" style="display:none" onchange="handleFile(this,'zone-main','prev-main','ph-main','clr-main')">
+          <div id="ph-main" class="upload-ph">
+            <span class="material-symbols-outlined" style="font-size:3rem;color:var(--clr-subtle)">upload_file</span>
+            <p class="fw-800 text-white mb-1 mt-2">Click to upload main photo</p>
+            <p style="font-size:.8rem;color:var(--clr-subtle);margin:0">JPG · JPEG · PNG · GIF · WEBP · Max 10 MB</p>
+          </div>
+          <img id="prev-main" class="upload-preview d-none" src="" alt="Main preview">
+          <button id="clr-main" class="upload-clear d-none" type="button" onclick="event.stopPropagation();clearFile('file-main','zone-main','prev-main','ph-main','clr-main')">
+            <span class="material-symbols-outlined" style="font-size:1rem">close</span>
+          </button>
+        </div>
+
+        <!-- Extra photos -->
+        <label class="login-label mt-4 mb-3">Additional Photos <span style="color:var(--clr-subtle)">(optional)</span></label>
+        <div class="row g-3">
+          <div class="col-4">
+            <div class="upload-zone upload-zone-sm" id="zone-2" onclick="triggerFile('file-2')">
+              <input type="file" id="file-2" accept=".jpg,.jpeg,.png,.gif,.webp,image/jpeg,image/png,image/gif,image/webp" style="display:none" onchange="handleFile(this,'zone-2','prev-2','ph-2','clr-2')">
+              <div id="ph-2" class="upload-ph">
+                <span class="material-symbols-outlined" style="font-size:1.75rem;color:var(--clr-subtle)">add_photo_alternate</span>
+                <p style="font-size:.75rem;color:var(--clr-subtle);margin:.25rem 0 0">Photo 2</p>
+              </div>
+              <img id="prev-2" class="upload-preview d-none" src="" alt="Photo 2">
+              <button id="clr-2" class="upload-clear d-none" type="button" onclick="event.stopPropagation();clearFile('file-2','zone-2','prev-2','ph-2','clr-2')">
+                <span class="material-symbols-outlined" style="font-size:.85rem">close</span>
+              </button>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="upload-zone upload-zone-sm" id="zone-3" onclick="triggerFile('file-3')">
+              <input type="file" id="file-3" accept=".jpg,.jpeg,.png,.gif,.webp,image/jpeg,image/png,image/gif,image/webp" style="display:none" onchange="handleFile(this,'zone-3','prev-3','ph-3','clr-3')">
+              <div id="ph-3" class="upload-ph">
+                <span class="material-symbols-outlined" style="font-size:1.75rem;color:var(--clr-subtle)">add_photo_alternate</span>
+                <p style="font-size:.75rem;color:var(--clr-subtle);margin:.25rem 0 0">Photo 3</p>
+              </div>
+              <img id="prev-3" class="upload-preview d-none" src="" alt="Photo 3">
+              <button id="clr-3" class="upload-clear d-none" type="button" onclick="event.stopPropagation();clearFile('file-3','zone-3','prev-3','ph-3','clr-3')">
+                <span class="material-symbols-outlined" style="font-size:.85rem">close</span>
+              </button>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="upload-zone upload-zone-sm" id="zone-4" onclick="triggerFile('file-4')">
+              <input type="file" id="file-4" accept=".jpg,.jpeg,.png,.gif,.webp,image/jpeg,image/png,image/gif,image/webp" style="display:none" onchange="handleFile(this,'zone-4','prev-4','ph-4','clr-4')">
+              <div id="ph-4" class="upload-ph">
+                <span class="material-symbols-outlined" style="font-size:1.75rem;color:var(--clr-subtle)">add_photo_alternate</span>
+                <p style="font-size:.75rem;color:var(--clr-subtle);margin:.25rem 0 0">Photo 4</p>
+              </div>
+              <img id="prev-4" class="upload-preview d-none" src="" alt="Photo 4">
+              <button id="clr-4" class="upload-clear d-none" type="button" onclick="event.stopPropagation();clearFile('file-4','zone-4','prev-4','ph-4','clr-4')">
+                <span class="material-symbols-outlined" style="font-size:.85rem">close</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Section 2: Property Details ── -->
+      <div class="profile-card mb-4">
+        <div class="d-flex align-items-center gap-3 mb-4">
+          <div class="step-badge" style="background:#fde047;color:#000">2</div>
+          <h2 class="font-headline fw-800 text-white mb-0" style="font-size:1.4rem">Property Details</h2>
+        </div>
+
+        <label class="login-label">Property Title <span style="color:var(--clr-secondary)">*</span></label>
+        <input type="text" class="login-input" id="prop-title" placeholder="e.g. Cozy Mountain Treehouse" maxlength="80">
+
+        <label class="login-label">Location <span style="color:var(--clr-secondary)">*</span></label>
+        <input type="text" class="login-input" id="prop-location" placeholder="e.g. Whistler, British Columbia" maxlength="80">
+
+        <div class="row g-3">
+          <div class="col-12 col-sm-6">
+            <label class="login-label">Category <span style="color:var(--clr-secondary)">*</span></label>
+            <select class="login-input" id="prop-category" style="cursor:pointer">
+              <option value="">Choose a category…</option>
+              <option value="Cabins">Cabins</option>
+              <option value="Villas">Villas</option>
+              <option value="Treehouses">Treehouses</option>
+              <option value="A-Frames">A-Frames</option>
+              <option value="Glamping">Glamping</option>
+              <option value="Castles">Castles</option>
+              <option value="Islands">Islands</option>
+              <option value="Beachfront">Beachfront</option>
+            </select>
+          </div>
+          <div class="col-12 col-sm-6">
+            <label class="login-label">Price Per Night (USD) <span style="color:var(--clr-secondary)">*</span></label>
+            <input type="number" class="login-input" id="prop-price" placeholder="e.g. 250" min="10" max="99999">
+          </div>
+        </div>
+
+        <label class="login-label mt-3">Contact Email <span style="color:var(--clr-secondary)">*</span></label>
+        <p class="mb-2" style="color:var(--clr-muted);font-size:.85rem">Guests will email you at this address. Pre-filled with your account email — change it if you prefer a different one.</p>
+        <input type="email" class="login-input" id="prop-contact-email" placeholder="e.g. host@example.com">
+      </div>
+
+      <!-- ── Section 3: Capacity ── -->
+      <div class="profile-card mb-4">
+        <div class="d-flex align-items-center gap-3 mb-4">
+          <div class="step-badge" style="background:#4aede8;color:#000">3</div>
+          <h2 class="font-headline fw-800 text-white mb-0" style="font-size:1.4rem">Capacity &amp; Rooms</h2>
+        </div>
+        <div class="row g-4">
+          <div class="col-6 col-md-3">
+            <label class="login-label d-block mb-3">Guests</label>
+            <div class="num-stepper">
+              <button type="button" onclick="step('guests',-1)">&#8722;</button>
+              <span id="val-guests">2</span>
+              <button type="button" onclick="step('guests',1)">&#43;</button>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <label class="login-label d-block mb-3">Bedrooms</label>
+            <div class="num-stepper">
+              <button type="button" onclick="step('bedrooms',-1)">&#8722;</button>
+              <span id="val-bedrooms">1</span>
+              <button type="button" onclick="step('bedrooms',1)">&#43;</button>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <label class="login-label d-block mb-3">Beds</label>
+            <div class="num-stepper">
+              <button type="button" onclick="step('beds',-1)">&#8722;</button>
+              <span id="val-beds">1</span>
+              <button type="button" onclick="step('beds',1)">&#43;</button>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <label class="login-label d-block mb-3">Baths</label>
+            <div class="num-stepper">
+              <button type="button" onclick="step('baths',-1)">&#8722;</button>
+              <span id="val-baths">1</span>
+              <button type="button" onclick="step('baths',1)">&#43;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Section 4: Amenities ── -->
+      <div class="profile-card mb-4">
+        <div class="d-flex align-items-center gap-3 mb-4">
+          <div class="step-badge" style="background:#a855f7">4</div>
+          <h2 class="font-headline fw-800 text-white mb-0" style="font-size:1.4rem">What This Place Offers</h2>
+        </div>
+        <div class="row row-cols-2 row-cols-md-3 g-2" id="amenities-grid"></div>
+      </div>
+
+      <!-- ── Section 5: Description ── -->
+      <div class="profile-card mb-4">
+        <div class="d-flex align-items-center gap-3 mb-4">
+          <div class="step-badge" style="background:#22c55e">5</div>
+          <h2 class="font-headline fw-800 text-white mb-0" style="font-size:1.4rem">About Your Space</h2>
+        </div>
+        <label class="login-label">Description</label>
+        <textarea class="login-input" id="prop-desc" rows="5" placeholder="Tell guests what makes your space special — the views, the vibe, nearby adventures…" style="resize:vertical;min-height:120px"></textarea>
+        <p style="color:var(--clr-subtle);font-size:.8rem;margin-top:-.5rem">Optional but recommended. A great description gets more bookings.</p>
+      </div>
+
+      <!-- Error -->
+      <div id="form-error" class="d-none mb-4 p-3 rounded-3 d-flex align-items-center gap-2" style="background:rgba(186,26,26,.2);border:2px solid #ba1a1a;color:#ff8080;font-weight:700">
+        <span class="material-symbols-outlined flex-shrink-0">error</span>
+        <span id="form-error-msg"></span>
+      </div>
+
+      <!-- Upload progress -->
+      <div id="upload-progress" class="d-none mb-4 p-3 rounded-3" style="background:rgba(74,237,232,.1);border:2px solid #4aede8;color:#4aede8;font-weight:700">
+        <div class="d-flex align-items-center gap-2">
+          <div class="spinner-border spinner-border-sm" role="status"></div>
+          <span id="upload-progress-msg">Uploading photos…</span>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button class="btn-yay-primary w-100 py-4" id="submit-btn" onclick="submitListing()" style="font-size:1.1rem;border-radius:var(--r-lg)">
+        <span id="submit-spinner" class="d-none spinner-border spinner-border-sm me-2" role="status"></span>
+        <span class="material-symbols-outlined me-1" style="font-variation-settings:'FILL' 1">rocket_launch</span>
+        Publish My Listing
+      </button>
+    </div>
+
+    <!-- ── Sidebar ── -->
+    <div class="col-12 col-lg-4">
+      <div class="profile-card sticky-top" style="top:90px">
+        <h3 class="font-headline fw-800 text-white mb-4" style="font-size:1.2rem">
+          <span class="material-symbols-outlined me-2" style="color:#fde047">tips_and_updates</span>Tips for a great listing
+        </h3>
+        <div class="d-flex flex-column gap-3">
+          <div class="d-flex gap-3 align-items-start">
+            <span class="material-symbols-outlined flex-shrink-0" style="color:var(--clr-secondary);font-size:1.2rem">photo_camera</span>
+            <p class="mb-0" style="color:var(--clr-muted);font-size:.9rem">Use bright, high-quality photos. Landscape shots work best as the main image.</p>
+          </div>
+          <div class="d-flex gap-3 align-items-start">
+            <span class="material-symbols-outlined flex-shrink-0" style="color:#fde047;font-size:1.2rem">wb_sunny</span>
+            <p class="mb-0" style="color:var(--clr-muted);font-size:.9rem">Shoot during the day with natural light for the most inviting look.</p>
+          </div>
+          <div class="d-flex gap-3 align-items-start">
+            <span class="material-symbols-outlined flex-shrink-0" style="color:#4aede8;font-size:1.2rem">location_on</span>
+            <p class="mb-0" style="color:var(--clr-muted);font-size:.9rem">Be specific about your location — "Whistler, BC" not just "Canada".</p>
+          </div>
+          <div class="d-flex gap-3 align-items-start">
+            <span class="material-symbols-outlined flex-shrink-0" style="color:#22c55e;font-size:1.2rem">checklist</span>
+            <p class="mb-0" style="color:var(--clr-muted);font-size:.9rem">List every amenity — guests filter by amenities when searching.</p>
+          </div>
+          <div class="d-flex gap-3 align-items-start">
+            <span class="material-symbols-outlined flex-shrink-0" style="color:#a855f7;font-size:1.2rem">sell</span>
+            <p class="mb-0" style="color:var(--clr-muted);font-size:.9rem">Research similar listings nearby to set a competitive nightly price.</p>
+          </div>
+        </div>
+
+        <hr class="section-divider my-4">
+
+        <div class="p-3 rounded-3" style="background:rgba(253,224,71,.08);border:2px solid rgba(253,224,71,.25)">
+          <p class="mb-0 fw-700" style="color:#fde047;font-size:.875rem">
+            <span class="material-symbols-outlined" style="font-size:1rem;vertical-align:middle">image</span>
+            Accepted formats: JPG, JPEG, PNG, GIF, WEBP
+          </p>
+          <p class="mb-0 mt-1" style="color:var(--clr-muted);font-size:.8rem">Max 10 MB per photo · Up to 4 photos total</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="vacay-footer">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-4">
+    <span class="brand-logo" style="font-size:1.3rem">VacayYay</span>
+    <p class="mb-0" style="color:var(--clr-subtle);font-family:var(--font-headline);font-size:.875rem">© 2025 VacayYay Inc. Adventure is calling.</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/main.js?v=2"></script>
+<script>
+const ALLOWED = /\.(jpg|jpeg|png|gif|webp)$/i;
+
+// ── Auth guard ──────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  if (!APP.user) { window.location.href = '/login?next=/list-property'; return; }
+  updateNavAuth();
+  buildAmenityGrid();
+  document.getElementById('prop-contact-email').value = APP.user.email;
+});
+
+// ── Upload zone helpers ──────────────────────────────────────────────────────
+function triggerFile(id) { document.getElementById(id).click(); }
+
+function handleFile(input, zoneId, prevId, phId, clrId) {
+  const file = input.files[0];
+  if (!file) return;
+
+  if (!ALLOWED.test(file.name)) {
+    showFormError(`"${file.name}" is not allowed. Use JPG, JPEG, PNG, GIF, or WEBP.`);
+    input.value = '';
+    return;
+  }
+  if (file.size > 10 * 1024 * 1024) {
+    showFormError(`"${file.name}" is too large. Max size is 10 MB.`);
+    input.value = '';
+    return;
+  }
+
+  const url  = URL.createObjectURL(file);
+  const prev = document.getElementById(prevId);
+  prev.src   = url;
+  prev.classList.remove('d-none');
+  document.getElementById(phId).style.display = 'none';
+  document.getElementById(clrId).classList.remove('d-none');
+  document.getElementById(zoneId).classList.add('has-file');
+  hideFormError();
+}
+
+function clearFile(inputId, zoneId, prevId, phId, clrId) {
+  const input = document.getElementById(inputId);
+  const prev  = document.getElementById(prevId);
+  if (prev.src) URL.revokeObjectURL(prev.src);
+  input.value = '';
+  prev.src    = '';
+  prev.classList.add('d-none');
+  document.getElementById(phId).style.display = '';
+  document.getElementById(clrId).classList.add('d-none');
+  document.getElementById(zoneId).classList.remove('has-file');
+}
+
+// ── Amenity grid ─────────────────────────────────────────────────────────────
+const AMENITIES_LIST = [
+  { icon: 'wifi',            label: 'Fast Wifi',        color: '#fe4d87' },
+  { icon: 'kitchen',         label: 'Full kitchen',     color: '#4aede8' },
+  { icon: 'hot_tub',         label: 'Hot tub',          color: '#fde047' },
+  { icon: 'pool',            label: 'Pool',             color: '#4aede8' },
+  { icon: 'fireplace',       label: 'Fireplace',        color: '#fe4d87' },
+  { icon: 'pets',            label: 'Pets allowed',     color: '#a1a1aa' },
+  { icon: 'ac_unit',         label: 'Air conditioning', color: '#a1a1aa' },
+  { icon: 'local_parking',   label: 'Free parking',     color: '#a1a1aa' },
+  { icon: 'beach_access',    label: 'Beach access',     color: '#4aede8' },
+  { icon: 'forest',          label: 'Forest view',      color: '#fde047' },
+  { icon: 'outdoor_grill',   label: 'Outdoor BBQ',      color: '#4aede8' },
+  { icon: 'deck',            label: 'Deck / Patio',     color: '#fde047' },
+  { icon: 'spa',             label: 'Spa & Sauna',      color: '#4aede8' },
+  { icon: 'landscape',       label: 'Mountain view',    color: '#a1a1aa' },
+  { icon: 'water',           label: 'Waterfront',       color: '#4aede8' },
+  { icon: 'downhill_skiing', label: 'Ski access',       color: '#fff'    },
+];
+
+function buildAmenityGrid() {
+  document.getElementById('amenities-grid').innerHTML = AMENITIES_LIST.map(a => `
+    <div class="col">
+      <label class="amenity-check w-100">
+        <input type="checkbox" data-amenity='${JSON.stringify(a)}'>
+        <span class="material-symbols-outlined" style="font-size:1rem;color:${a.color}">${a.icon}</span>
+        ${a.label}
+      </label>
+    </div>`).join('');
+}
+
+// ── Steppers ─────────────────────────────────────────────────────────────────
+const COUNTERS = { guests:2, bedrooms:1, beds:1, baths:1 };
+const LIMITS   = { guests:[1,20], bedrooms:[0,10], beds:[1,20], baths:[1,10] };
+function step(key, d) {
+  const [mn, mx] = LIMITS[key];
+  COUNTERS[key]  = Math.max(mn, Math.min(mx, COUNTERS[key] + d));
+  document.getElementById(`val-${key}`).textContent = COUNTERS[key];
+}
+
+// ── Submit ────────────────────────────────────────────────────────────────────
+async function submitListing() {
+  const title        = document.getElementById('prop-title').value.trim();
+  const location     = document.getElementById('prop-location').value.trim();
+  const category     = document.getElementById('prop-category').value;
+  const price        = document.getElementById('prop-price').value;
+  const desc         = document.getElementById('prop-desc').value.trim();
+  const contactEmail = document.getElementById('prop-contact-email').value.trim();
+  const mainFile     = document.getElementById('file-main').files[0];
+
+  if (!title)        return showFormError('Please enter a property title.');
+  if (!location)     return showFormError('Please enter a location.');
+  if (!category)     return showFormError('Please select a category.');
+  if (!price || +price < 10) return showFormError('Please enter a valid price (minimum $10).');
+  if (!contactEmail) return showFormError('Please enter a contact email address for guests.');
+  if (!mainFile)     return showFormError('Please upload a main photo.');
+
+  const amenities = [];
+  document.querySelectorAll('#amenities-grid input:checked').forEach(cb => {
+    try { amenities.push(JSON.parse(cb.dataset.amenity)); } catch {}
+  });
+
+  const btn = document.getElementById('submit-btn');
+  const spn = document.getElementById('submit-spinner');
+  btn.disabled = true; spn.classList.remove('d-none');
+
+  try {
+    // Step 1 – upload images
+    showProgress('Uploading photos…');
+    const formData = new FormData();
+    formData.append('images', mainFile);
+    ['file-2','file-3','file-4'].forEach(id => {
+      const f = document.getElementById(id).files[0];
+      if (f) formData.append('images', f);
+    });
+
+    const upRes  = await fetch('/api/upload', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${APP.token}` },
+      body: formData,
+    });
+    const upData = await upRes.json();
+    if (!upRes.ok) { hideProgress(); return showFormError(upData.error || 'Photo upload failed.'); }
+
+    const [image, ...extraImages] = upData.urls;
+
+    // Step 2 – create property
+    showProgress('Publishing your listing…');
+    const res  = await fetch('/api/properties', {
+      method:  'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({
+        title, location, category, price: +price, description: desc,
+        image, images: extraImages, amenities, contact_email: contactEmail,
+        guests:   COUNTERS.guests,
+        bedrooms: COUNTERS.bedrooms,
+        beds:     COUNTERS.beds,
+        baths:    COUNTERS.baths,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) { hideProgress(); return showFormError(data.error || 'Failed to publish listing.'); }
+
+    // Invalidate listings cache so dashboard refreshes from server
+    localStorage.removeItem(`vy_listings_${APP.user.id}`);
+    window.location.href = `/property/${data.id}`;
+  } catch {
+    hideProgress();
+    showFormError('Network error. Please try again.');
+  } finally {
+    btn.disabled = false; spn.classList.add('d-none');
+  }
+}
+
+function showFormError(msg) {
+  const wrap = document.getElementById('form-error');
+  document.getElementById('form-error-msg').textContent = msg;
+  wrap.classList.remove('d-none');
+  wrap.scrollIntoView({ behavior:'smooth', block:'center' });
+}
+function hideFormError() { document.getElementById('form-error').classList.add('d-none'); }
+function showProgress(msg) {
+  document.getElementById('upload-progress-msg').textContent = msg;
+  document.getElementById('upload-progress').classList.remove('d-none');
+}
+function hideProgress() { document.getElementById('upload-progress').classList.add('d-none'); }
+</script>
+</body>
+</html>

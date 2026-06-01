@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VacayYay – Sign In</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+<header class="vacay-navbar">
+  <div class="d-flex justify-content-between align-items-center px-4 py-3">
+    <a href="/" class="brand-logo">VacayYay</a>
+    <a href="/" class="btn-yay-outline text-decoration-none">Back to explore</a>
+  </div>
+</header>
+
+<main class="flex-grow-1 d-flex align-items-center justify-content-center px-3 py-5">
+  <div class="login-card">
+
+    <div class="mb-5">
+      <h1 class="font-headline fw-900 text-white mb-1" style="font-size:2rem;letter-spacing:-0.02em">Welcome back</h1>
+      <p style="color:var(--clr-muted);font-size:.95rem">Sign in to continue your adventure.</p>
+    </div>
+
+    <div id="login-error" class="mb-3 p-3 rounded-3 d-none" style="background:rgba(186,26,26,.2);border:2px solid #ba1a1a;color:#ff8080;font-weight:700;font-size:.9rem"></div>
+
+    <label class="login-label">Email address</label>
+    <input type="email" class="login-input" id="login-email" placeholder="you@adventure.com" autocomplete="email">
+
+    <label class="login-label">Password</label>
+    <div class="position-relative">
+      <input type="password" class="login-input" id="login-password" placeholder="••••••••" autocomplete="current-password">
+      <button onclick="togglePass('login-password')" style="background:none;border:none;position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--clr-muted);cursor:pointer">
+        <span class="material-symbols-outlined" style="font-size:1.1rem">visibility</span>
+      </button>
+    </div>
+
+    <button class="btn-yay-primary w-100 mt-2" id="login-btn" onclick="doLogin()">
+      <span id="login-spinner" class="d-none spinner-border spinner-border-sm me-2" role="status"></span>
+      Sign In
+    </button>
+
+    <p class="text-center mt-4" style="color:var(--clr-muted);font-size:.95rem">
+      Don't have an account?
+      <a id="register-link" href="/register" style="color:#fde047;font-weight:800;text-decoration:none"> Create one &rarr;</a>
+    </p>
+
+  </div>
+</main>
+
+<footer class="vacay-footer" style="margin-top:0;padding:1.5rem 3rem">
+  <p class="mb-0 text-center" style="color:var(--clr-subtle);font-family:var(--font-headline);font-size:.875rem">© 2025 VacayYay Inc.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/main.js?v=2"></script>
+<script>
+if (APP.user) window.location.href = '/dashboard';
+
+// Carry ?next= param through to register link
+const nextParam = new URLSearchParams(location.search).get('next');
+if (nextParam) document.getElementById('register-link').href = `/register?next=${encodeURIComponent(nextParam)}`;
+
+function togglePass(id) {
+  const el = document.getElementById(id);
+  el.type = el.type === 'password' ? 'text' : 'password';
+}
+
+function showError(msg) {
+  const el = document.getElementById('login-error');
+  el.textContent = msg;
+  el.classList.remove('d-none');
+}
+
+async function doLogin() {
+  document.getElementById('login-error').classList.add('d-none');
+  const email    = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  if (!email || !password) return showError('Please fill in all fields.');
+  const btn = document.getElementById('login-btn');
+  const spn = document.getElementById('login-spinner');
+  btn.disabled = true; spn.classList.remove('d-none');
+  try {
+    const res  = await fetch('/api/auth/login', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+    if (!res.ok) return showError(data.error || 'Login failed.');
+    saveUser(data.user, data.token);
+    await syncWishlist();
+    const next = new URLSearchParams(location.search).get('next') || '/dashboard';
+    window.location.href = next;
+  } catch {
+    showError('Network error. Please try again.');
+  } finally {
+    btn.disabled = false; spn.classList.add('d-none');
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VacayYay – Create Account</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+<header class="vacay-navbar">
+  <div class="d-flex justify-content-between align-items-center px-4 py-3">
+    <a href="/" class="brand-logo">VacayYay</a>
+    <a href="/" class="btn-yay-outline text-decoration-none">Back to explore</a>
+  </div>
+</header>
+
+<main class="flex-grow-1 d-flex align-items-center justify-content-center px-3 py-5">
+  <div class="login-card">
+
+    <div class="mb-5">
+      <h1 class="font-headline fw-900 text-white mb-1" style="font-size:2rem;letter-spacing:-0.02em">Create account</h1>
+      <p style="color:var(--clr-muted);font-size:.95rem">Join thousands of adventurers on VacayYay.</p>
+    </div>
+
+    <div id="reg-error" class="mb-3 p-3 rounded-3 d-none" style="background:rgba(186,26,26,.2);border:2px solid #ba1a1a;color:#ff8080;font-weight:700;font-size:.9rem"></div>
+
+    <!-- Profile photo (required) -->
+    <label class="login-label">Profile photo <span style="color:var(--clr-secondary)">*</span></label>
+    <div class="d-flex align-items-center gap-3 mb-4">
+      <div id="reg-avatar-wrap" onclick="document.getElementById('reg-avatar-file').click()"
+        style="width:5rem;height:5rem;flex-shrink:0;border-radius:50%;border:3px dashed #52525b;background:#3f3f46;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden">
+        <span class="material-symbols-outlined" id="reg-avatar-ph" style="font-size:2rem;color:var(--clr-subtle)">add_a_photo</span>
+        <img id="reg-avatar-prev" class="d-none" alt="Preview" style="width:100%;height:100%;object-fit:cover">
+      </div>
+      <div>
+        <button type="button" class="btn-yay-outline" onclick="document.getElementById('reg-avatar-file').click()">
+          <span class="material-symbols-outlined" style="font-size:1rem">upload</span> Choose photo
+        </button>
+        <p class="mb-0 mt-2" style="color:var(--clr-subtle);font-size:.78rem">JPG, PNG or WEBP · Max 10 MB</p>
+      </div>
+      <input type="file" id="reg-avatar-file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" style="display:none" onchange="previewAvatar(this)">
+    </div>
+
+    <label class="login-label">Full name</label>
+    <input type="text" class="login-input" id="reg-name" placeholder="Your name" autocomplete="name">
+
+    <label class="login-label">Email address</label>
+    <input type="email" class="login-input" id="reg-email" placeholder="you@adventure.com" autocomplete="email">
+
+    <label class="login-label">Password</label>
+    <div class="position-relative">
+      <input type="password" class="login-input" id="reg-password" placeholder="Min. 6 characters" autocomplete="new-password">
+      <button onclick="togglePass('reg-password')" style="background:none;border:none;position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--clr-muted);cursor:pointer">
+        <span class="material-symbols-outlined" style="font-size:1.1rem">visibility</span>
+      </button>
+    </div>
+
+    <label class="login-label">Confirm password</label>
+    <div class="position-relative">
+      <input type="password" class="login-input" id="reg-confirm" placeholder="Re-enter your password" autocomplete="new-password">
+      <button onclick="togglePass('reg-confirm')" style="background:none;border:none;position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--clr-muted);cursor:pointer">
+        <span class="material-symbols-outlined" style="font-size:1.1rem">visibility</span>
+      </button>
+    </div>
+
+    <button class="btn-yay-primary w-100 mt-2" id="reg-btn" onclick="doRegister()">
+      <span id="reg-spinner" class="d-none spinner-border spinner-border-sm me-2" role="status"></span>
+      Create Account
+    </button>
+
+    <p class="text-center mt-3" style="color:var(--clr-muted);font-size:.85rem">
+      By creating an account you agree to our
+      <a href="/terms" style="color:var(--clr-secondary)">Terms</a> and
+      <a href="/privacy" style="color:var(--clr-secondary)">Privacy Policy</a>.
+    </p>
+
+    <hr class="section-divider">
+
+    <p class="text-center" style="color:var(--clr-muted);font-size:.95rem">
+      Already have an account?
+      <a id="login-link" href="/login" style="color:#fde047;font-weight:800;text-decoration:none"> Sign in &rarr;</a>
+    </p>
+
+  </div>
+</main>
+
+<footer class="vacay-footer" style="margin-top:0;padding:1.5rem 3rem">
+  <p class="mb-0 text-center" style="color:var(--clr-subtle);font-family:var(--font-headline);font-size:.875rem">© 2025 VacayYay Inc.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/main.js?v=2"></script>
+<script>
+if (APP.user) window.location.href = '/dashboard';
+
+// Carry ?next= param through to login link
+const nextParam = new URLSearchParams(location.search).get('next');
+if (nextParam) document.getElementById('login-link').href = `/login?next=${encodeURIComponent(nextParam)}`;
+
+function togglePass(id) {
+  const el = document.getElementById(id);
+  el.type = el.type === 'password' ? 'text' : 'password';
+}
+
+function showError(msg) {
+  const el = document.getElementById('reg-error');
+  el.textContent = msg;
+  el.classList.remove('d-none');
+}
+
+function previewAvatar(input) {
+  document.getElementById('reg-error').classList.add('d-none');
+  const file = input.files[0];
+  if (!file) return;
+  if (!/\.(jpg|jpeg|png|webp)$/i.test(file.name)) { showError('Profile photo must be a JPG, PNG, or WEBP image.'); input.value = ''; return; }
+  if (file.size > 10 * 1024 * 1024) { showError('Profile photo must be under 10 MB.'); input.value = ''; return; }
+  const prev = document.getElementById('reg-avatar-prev');
+  prev.src = URL.createObjectURL(file);
+  prev.classList.remove('d-none');
+  document.getElementById('reg-avatar-ph').classList.add('d-none');
+  document.getElementById('reg-avatar-wrap').style.border = '3px solid #fde047';
+}
+
+async function doRegister() {
+  document.getElementById('reg-error').classList.add('d-none');
+  const name     = document.getElementById('reg-name').value.trim();
+  const email    = document.getElementById('reg-email').value.trim();
+  const password = document.getElementById('reg-password').value;
+  const confirm  = document.getElementById('reg-confirm').value;
+  const photo    = document.getElementById('reg-avatar-file').files[0];
+  if (!name || !email || !password || !confirm) return showError('Please fill in all fields.');
+  if (!photo) return showError('Please choose a profile photo.');
+  if (password !== confirm) return showError('Passwords do not match.');
+  const btn = document.getElementById('reg-btn');
+  const spn = document.getElementById('reg-spinner');
+  btn.disabled = true; spn.classList.remove('d-none');
+  try {
+    const res  = await fetch('/api/auth/register', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ name, email, password })
+    });
+    const data = await res.json();
+    if (!res.ok) { showError(data.error || 'Registration failed.'); return; }
+    saveUser(data.user, data.token);
+
+    // Upload the required profile photo now that we have a token
+    const fd = new FormData();
+    fd.append('avatar', photo);
+    const up = await fetch('/api/user/avatar', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${data.token}` },
+      body: fd,
+    });
+    const upData = await up.json();
+    if (up.ok && upData.avatar) {
+      APP.user.avatar = upData.avatar;
+      saveUser(APP.user, null);
+    }
+
+    const next = new URLSearchParams(location.search).get('next') || '/dashboard';
+    window.location.href = next;
+  } catch {
+    showError('Network error. Please try again.');
+  } finally {
+    btn.disabled = false; spn.classList.add('d-none');
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') doRegister();
+});
+</script>
+</body>
+</html>

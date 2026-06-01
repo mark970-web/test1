@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VacayYay – Account Settings</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+<!-- ═══ Navbar ═══ -->
+<header class="vacay-navbar">
+  <div class="d-flex justify-content-between align-items-center px-4 py-3">
+    <a href="/" class="brand-logo">VacayYay</a>
+    <a href="/dashboard" class="btn-yay-outline text-decoration-none">
+      <span class="material-symbols-outlined">arrow_back</span> Back to Dashboard
+    </a>
+  </div>
+</header>
+
+<!-- ═══ Main ═══ -->
+<main class="flex-grow-1 container-xl px-3 px-md-4 py-5" style="max-width:720px">
+
+  <div class="mb-5">
+    <h1 class="font-headline fw-900 mb-1" style="font-size:clamp(2rem,5vw,2.75rem);color:#fde047;letter-spacing:-0.02em">Account Settings</h1>
+    <p style="color:var(--clr-muted);font-size:1.05rem">Manage your email, password, and account.</p>
+  </div>
+
+  <!-- ── Change Email ── -->
+  <div class="profile-card mb-4">
+    <h2 class="font-headline fw-800 text-white mb-1" style="font-size:1.4rem">Change Email</h2>
+    <p class="mb-4" style="color:var(--clr-muted);font-size:.9rem">Update the email address linked to your account.</p>
+
+    <div id="email-msg" class="d-none mb-3 p-3 rounded-3" style="font-weight:700;font-size:.9rem"></div>
+
+    <label class="login-label">New email address</label>
+    <input type="email" class="login-input" id="email-new" placeholder="you@adventure.com" autocomplete="email">
+
+    <label class="login-label">Current password</label>
+    <input type="password" class="login-input" id="email-pass" placeholder="••••••••" autocomplete="current-password">
+
+    <button class="btn-yay-primary mt-2" id="email-btn" onclick="changeEmail()">
+      <span id="email-spinner" class="d-none spinner-border spinner-border-sm me-2" role="status"></span>
+      Update Email
+    </button>
+  </div>
+
+  <!-- ── Change Password ── -->
+  <div class="profile-card mb-4">
+    <h2 class="font-headline fw-800 text-white mb-1" style="font-size:1.4rem">Change Password</h2>
+    <p class="mb-4" style="color:var(--clr-muted);font-size:.9rem">Choose a new password (at least 6 characters).</p>
+
+    <div id="pass-msg" class="d-none mb-3 p-3 rounded-3" style="font-weight:700;font-size:.9rem"></div>
+
+    <label class="login-label">Current password</label>
+    <input type="password" class="login-input" id="pass-current" placeholder="••••••••" autocomplete="current-password">
+
+    <label class="login-label">New password</label>
+    <input type="password" class="login-input" id="pass-new" placeholder="Min. 6 characters" autocomplete="new-password">
+
+    <label class="login-label">Confirm new password</label>
+    <input type="password" class="login-input" id="pass-confirm" placeholder="Re-enter new password" autocomplete="new-password">
+
+    <button class="btn-yay-primary mt-2" id="pass-btn" onclick="changePassword()">
+      <span id="pass-spinner" class="d-none spinner-border spinner-border-sm me-2" role="status"></span>
+      Update Password
+    </button>
+  </div>
+
+  <!-- ── Danger Zone ── -->
+  <div class="profile-card mb-4" style="border:2px solid #ba1a1a">
+    <h2 class="font-headline fw-800 mb-1" style="font-size:1.4rem;color:#ff8080">Delete Account</h2>
+    <p class="mb-4" style="color:var(--clr-muted);font-size:.9rem">
+      Permanently delete your account, your listings, trips, saved spots, and reviews. This cannot be undone.
+    </p>
+
+    <div id="del-msg" class="d-none mb-3 p-3 rounded-3" style="font-weight:700;font-size:.9rem"></div>
+
+    <label class="login-label">Enter your password to confirm</label>
+    <input type="password" class="login-input" id="del-pass" placeholder="••••••••" autocomplete="current-password">
+
+    <button class="mt-2 py-3 px-4 rounded-3 fw-900 border-0" id="del-btn" onclick="deleteAccount()"
+      style="background:#ba1a1a;color:#fff;font-family:var(--font-body);cursor:pointer">
+      <span id="del-spinner" class="d-none spinner-border spinner-border-sm me-2" role="status"></span>
+      Delete My Account
+    </button>
+  </div>
+
+</main>
+
+<footer class="vacay-footer" style="margin-top:0;padding:1.5rem 3rem">
+  <p class="mb-0 text-center" style="color:var(--clr-subtle);font-family:var(--font-headline);font-size:.875rem">© 2025 VacayYay Inc.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/main.js?v=2"></script>
+<script>
+// Auth guard
+if (!APP.user) window.location.href = '/login?next=/account';
+
+const OK_STYLE  = 'background:rgba(74,222,128,.15);border:2px solid #4ade80;color:#4ade80';
+const ERR_STYLE = 'background:rgba(186,26,26,.2);border:2px solid #ba1a1a;color:#ff8080';
+
+function setMsg(id, text, ok) {
+  const el = document.getElementById(id);
+  el.textContent = text;
+  el.style.cssText = (ok ? OK_STYLE : ERR_STYLE);
+  el.classList.remove('d-none');
+}
+
+function busy(btnId, spinnerId, on) {
+  document.getElementById(btnId).disabled = on;
+  document.getElementById(spinnerId).classList.toggle('d-none', !on);
+}
+
+// ── Change Email ──
+async function changeEmail() {
+  const email    = document.getElementById('email-new').value.trim();
+  const password = document.getElementById('email-pass').value;
+  if (!email || !password) return setMsg('email-msg', 'Please fill in both fields.', false);
+
+  busy('email-btn', 'email-spinner', true);
+  try {
+    const res  = await fetch('/api/user/email', {
+      method: 'PUT', headers: authHeaders(),
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await res.json();
+    if (!res.ok) return setMsg('email-msg', data.error || 'Failed to update email.', false);
+    saveUser(data.user, data.token);
+    document.getElementById('email-pass').value = '';
+    setMsg('email-msg', 'Email updated successfully.', true);
+  } catch {
+    setMsg('email-msg', 'Network error. Please try again.', false);
+  } finally {
+    busy('email-btn', 'email-spinner', false);
+  }
+}
+
+// ── Change Password ──
+async function changePassword() {
+  const currentPassword = document.getElementById('pass-current').value;
+  const newPassword     = document.getElementById('pass-new').value;
+  const confirm         = document.getElementById('pass-confirm').value;
+  if (!currentPassword || !newPassword || !confirm) return setMsg('pass-msg', 'Please fill in all fields.', false);
+  if (newPassword.length < 6) return setMsg('pass-msg', 'New password must be at least 6 characters.', false);
+  if (newPassword !== confirm) return setMsg('pass-msg', 'New passwords do not match.', false);
+
+  busy('pass-btn', 'pass-spinner', true);
+  try {
+    const res  = await fetch('/api/user/password', {
+      method: 'PUT', headers: authHeaders(),
+      body: JSON.stringify({ currentPassword, newPassword }),
+    });
+    const data = await res.json();
+    if (!res.ok) return setMsg('pass-msg', data.error || 'Failed to update password.', false);
+    ['pass-current', 'pass-new', 'pass-confirm'].forEach(id => document.getElementById(id).value = '');
+    setMsg('pass-msg', 'Password updated successfully.', true);
+  } catch {
+    setMsg('pass-msg', 'Network error. Please try again.', false);
+  } finally {
+    busy('pass-btn', 'pass-spinner', false);
+  }
+}
+
+// ── Delete Account ──
+async function deleteAccount() {
+  const password = document.getElementById('del-pass').value;
+  if (!password) return setMsg('del-msg', 'Please enter your password to confirm.', false);
+  if (!confirm('Are you absolutely sure? This will permanently delete your account and all your data.')) return;
+
+  busy('del-btn', 'del-spinner', true);
+  try {
+    const res  = await fetch('/api/user/account', {
+      method: 'DELETE', headers: authHeaders(),
+      body: JSON.stringify({ password }),
+    });
+    const data = await res.json();
+    if (!res.ok) { setMsg('del-msg', data.error || 'Failed to delete account.', false); busy('del-btn', 'del-spinner', false); return; }
+    logout(); // clears storage and redirects home
+  } catch {
+    setMsg('del-msg', 'Network error. Please try again.', false);
+    busy('del-btn', 'del-spinner', false);
+  }
+}
+</script>
+</body>
+</html>

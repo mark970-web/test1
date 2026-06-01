@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VacayYay – Property</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<!-- ═══ Navbar ═══ -->
+<header class="vacay-navbar">
+  <div class="d-flex justify-content-between align-items-center px-4 py-3">
+    <div class="d-flex align-items-center gap-4">
+      <a href="/" class="brand-logo">VacayYay</a>
+      <nav class="d-none d-lg-flex align-items-center gap-4">
+        <a href="/search?category=cabins"     class="vacay-nav-link">Cabins</a>
+        <a href="/search?category=castles"    class="vacay-nav-link">Castles</a>
+        <a href="/search?category=treehouses" class="vacay-nav-link">Treehouses</a>
+        <a href="/search?category=villas"     class="vacay-nav-link">Villas</a>
+      </nav>
+    </div>
+    <div class="d-flex align-items-center gap-3">
+      <a href="/list-property" class="d-none d-lg-block text-decoration-none fw-bold" style="color:var(--clr-muted);font-family:var(--font-headline)">Host your home</a>
+      <div class="nav-user-pill" onclick="location.href='/dashboard'">
+        <span class="material-symbols-outlined text-white">menu</span>
+        <span id="nav-user-badge">
+          <span class="rounded-circle d-flex align-items-center justify-content-center" style="width:32px;height:32px;background:#fde047;border:2px solid #000">
+            <span class="material-symbols-outlined" style="font-size:16px;color:#000">person</span>
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ Main ═══ -->
+<main class="container-xl px-3 px-md-4 py-5" id="prop-main" style="display:none">
+
+  <!-- Header / Breadcrumb -->
+  <header class="mb-4">
+    <div class="d-flex align-items-center gap-2 mb-3">
+      <button onclick="history.back()" class="d-flex align-items-center justify-content-center rounded-circle border-yay-2 neo-shadow-sm" style="width:2.5rem;height:2.5rem;background:#27272a;cursor:pointer;color:#fff">
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      <span class="fw-800 text-uppercase" style="font-size:13px;letter-spacing:.1em;color:var(--clr-secondary)" id="prop-category">Back</span>
+    </div>
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3">
+      <div>
+        <h1 class="font-headline fw-900 text-white mb-2" style="font-size:clamp(1.8rem,4vw,3rem);letter-spacing:-0.02em;line-height:1.1" id="prop-title">Loading…</h1>
+        <div class="d-flex align-items-center gap-3" style="color:var(--clr-muted);font-size:.95rem">
+          <span class="d-flex align-items-center gap-1">
+            <span class="material-symbols-outlined" style="color:#fde047;font-size:16px;font-variation-settings:'FILL' 1">star</span>
+            <span id="prop-rating">—</span> · <span id="prop-reviews">—</span> reviews
+          </span>
+          <span>·</span>
+          <span class="fw-700 text-white" id="prop-location">—</span>
+        </div>
+      </div>
+      <div class="d-flex gap-2">
+        <button class="btn-yay-outline" onclick="navigator.share && navigator.share({title:document.title,url:location.href})">
+          <span class="material-symbols-outlined">share</span> Share
+        </button>
+        <button class="btn-yay-outline" id="fav-header-btn" onclick="toggleFav()">
+          <span class="material-symbols-outlined" id="fav-header-icon">favorite_border</span> <span id="fav-header-text">Save</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Gallery (populated by JS: single image, or horizontal scroll when multiple) -->
+  <div id="gallery-wrap" class="mb-5"></div>
+
+  <!-- Content + Booking -->
+  <div class="row g-5">
+
+    <!-- ── Content ── -->
+    <div class="col-12 col-lg-7">
+
+      <!-- Host info -->
+      <section class="pb-4 mb-4" style="border-bottom:2px solid #3f3f46">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h2 class="font-headline fw-800 text-white mb-1" style="font-size:1.6rem">Hosted by <span id="host-name">—</span></h2>
+            <p class="mb-0" style="color:var(--clr-muted)"><span id="host-super"></span> · <span id="host-years">—</span> years hosting</p>
+          </div>
+          <div class="position-relative">
+            <img id="host-avatar" src="" alt="Host" class="rounded-circle" style="width:4rem;height:4rem;object-fit:cover;border:4px solid #fde047;transform:rotate(3deg);box-shadow:4px 4px 0 #000">
+            <span id="host-verified" class="d-none position-absolute bottom-0 end-0 rounded-circle d-flex align-items-center justify-content-center" style="width:1.5rem;height:1.5rem;background:var(--clr-secondary);border:2px solid #000">
+              <span class="material-symbols-outlined" style="font-size:12px;color:#fff;font-variation-settings:'FILL' 1">verified</span>
+            </span>
+          </div>
+        </div>
+        <button id="contact-host-btn" class="d-none btn-yay-outline mt-3" onclick="contactHost()">
+          <span class="material-symbols-outlined">mail</span> Contact Host
+        </button>
+      </section>
+
+      <!-- Highlights -->
+      <section class="mb-5" id="highlights-section">
+        <div id="highlights"></div>
+      </section>
+
+      <!-- About -->
+      <section class="mb-5">
+        <h2 class="font-headline fw-800 text-white mb-3" style="font-size:1.6rem">About this place</h2>
+        <p id="prop-desc" style="color:var(--clr-muted);font-size:1.05rem;line-height:1.7"></p>
+        <div class="d-flex flex-wrap gap-2 mt-3" id="prop-specs"></div>
+      </section>
+
+      <hr class="section-divider">
+
+      <!-- Amenities -->
+      <section class="mb-5">
+        <h2 class="font-headline fw-800 text-white mb-4" style="font-size:1.6rem">What this place offers</h2>
+        <div class="row row-cols-1 row-cols-md-2 g-3" id="amenities-grid"></div>
+        <button class="btn-yay-outline mt-4" onclick="document.getElementById('amenities-grid').scrollIntoView({behavior:'smooth'})">
+          Show all amenities
+        </button>
+      </section>
+
+      <hr class="section-divider">
+
+      <!-- Reviews -->
+      <section class="mb-5">
+        <div class="d-flex align-items-center gap-3 mb-4">
+          <span class="material-symbols-outlined" style="font-size:1.75rem;color:#fde047;font-variation-settings:'FILL' 1">star</span>
+          <h2 class="font-headline fw-800 text-white mb-0" style="font-size:1.6rem"><span id="rev-rating">—</span> · <span id="rev-count">—</span> reviews</h2>
+        </div>
+
+        <div id="reviews-loading" class="py-3 d-flex justify-content-center">
+          <div class="spinner-yay" style="width:2rem;height:2rem;border-width:3px"></div>
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-2 g-4 mb-4 d-none" id="reviews-grid"></div>
+
+        <p id="reviews-empty" class="d-none mb-4" style="color:var(--clr-muted)">No reviews yet — be the first to share your experience!</p>
+
+        <!-- Leave a review form (logged in, not yet reviewed) -->
+        <div id="review-form-wrap" class="d-none p-4 rounded-yay-lg" style="background:#27272a;border:3px solid #3f3f46">
+          <h3 class="font-headline fw-800 text-white mb-4" style="font-size:1.2rem">Leave a review</h3>
+          <div id="review-error" class="mb-3 p-3 rounded-3 d-none" style="background:rgba(186,26,26,.2);border:2px solid #ba1a1a;color:#ff8080;font-weight:700;font-size:.9rem"></div>
+          <p class="mb-2 fw-700" style="color:var(--clr-muted);font-size:.9rem;text-transform:uppercase;letter-spacing:.05em">Your rating</p>
+          <div class="d-flex gap-1 mb-4" id="star-picker" onmouseleave="hoverStars(0)">
+            <span class="rev-star" data-v="1" onmouseenter="hoverStars(1)" onclick="selectStar(1)">&#9733;</span>
+            <span class="rev-star" data-v="2" onmouseenter="hoverStars(2)" onclick="selectStar(2)">&#9733;</span>
+            <span class="rev-star" data-v="3" onmouseenter="hoverStars(3)" onclick="selectStar(3)">&#9733;</span>
+            <span class="rev-star" data-v="4" onmouseenter="hoverStars(4)" onclick="selectStar(4)">&#9733;</span>
+            <span class="rev-star" data-v="5" onmouseenter="hoverStars(5)" onclick="selectStar(5)">&#9733;</span>
+          </div>
+          <textarea id="review-comment" rows="3" placeholder="Share what made your stay special…"
+            style="width:100%;background:#3f3f46;border:2px solid #52525b;border-radius:var(--r);color:#fff;font-family:var(--font-body);font-size:.95rem;padding:.85rem 1rem;resize:vertical;outline:none;transition:border-color .2s"
+            onfocus="this.style.borderColor='var(--clr-primary)'" onblur="this.style.borderColor='#52525b'"></textarea>
+          <button class="btn-yay-primary mt-3" id="review-submit-btn" onclick="submitReview()">
+            <span id="review-submit-spinner" class="d-none spinner-border spinner-border-sm me-2" role="status"></span>
+            Post Review
+          </button>
+        </div>
+
+        <!-- Already reviewed -->
+        <div id="already-reviewed" class="d-none p-3 rounded-3 d-flex align-items-center gap-3" style="background:#3f3f46;border:2px solid #52525b">
+          <span class="material-symbols-outlined" style="color:#4ade80;font-variation-settings:'FILL' 1">check_circle</span>
+          <p class="mb-0 fw-700" style="color:#4ade80;font-size:.9rem">You've already reviewed this property.</p>
+        </div>
+
+        <!-- Not logged in -->
+        <div id="review-signin" class="d-none p-3 rounded-3" style="background:#3f3f46;border:2px solid #52525b">
+          <p class="mb-0" style="color:var(--clr-muted);font-size:.9rem">
+            <a href="/login" style="color:#fde047;font-weight:800;text-decoration:none">Sign in</a> to leave a review.
+          </p>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ── Booking Card ── -->
+    <div class="col-12 col-lg-5">
+      <div class="booking-card">
+        <div class="d-flex justify-content-between align-items-end mb-4">
+          <div>
+            <span class="font-headline fw-900" style="font-size:1.75rem;color:var(--clr-secondary)" id="book-price">$—</span>
+            <span style="color:var(--clr-muted)"> / night</span>
+          </div>
+          <div class="d-flex align-items-center gap-1 fw-800 text-white">
+            <span class="material-symbols-outlined" style="color:#fde047;font-variation-settings:'FILL' 1;font-size:16px">star</span>
+            <span id="book-rating">—</span>
+          </div>
+        </div>
+
+        <!-- Dates / guests -->
+        <div class="booking-dates-box mb-4">
+          <div class="d-flex border-bottom border-dark">
+            <div class="booking-date-cell border-end border-dark">
+              <span class="booking-date-label">CHECK-IN</span>
+              <input type="date" id="checkin" class="login-input mb-0" style="background:transparent;border:none;padding:0;font-size:.95rem;color:#fff;font-weight:700;font-family:var(--font-headline)">
+            </div>
+            <div class="booking-date-cell">
+              <span class="booking-date-label">CHECKOUT</span>
+              <input type="date" id="checkout" class="login-input mb-0" style="background:transparent;border:none;padding:0;font-size:.95rem;color:#fff;font-weight:700;font-family:var(--font-headline)">
+            </div>
+          </div>
+          <div class="booking-date-cell" style="background:#3f3f46">
+            <span class="booking-date-label">GUESTS</span>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="fw-700" id="guest-display">2 Guests</span>
+              <div class="d-flex align-items-center gap-2">
+                <button onclick="changeGuests(-1)" style="background:#27272a;border:2px solid #fff;border-radius:50%;width:28px;height:28px;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center">
+                  <span class="material-symbols-outlined" style="font-size:16px">remove</span>
+                </button>
+                <button onclick="changeGuests(1)" style="background:#27272a;border:2px solid #fff;border-radius:50%;width:28px;height:28px;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center">
+                  <span class="material-symbols-outlined" style="font-size:16px">add</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="booking-conflict" class="d-none mb-3 p-3 rounded-3" style="background:rgba(255,165,0,.1);border:2px solid #f97316;color:#f97316;font-weight:700;font-size:.875rem">
+          <span class="material-symbols-outlined me-1" style="font-size:1rem;vertical-align:middle">event_busy</span>
+          These dates overlap with an existing booking. Choose different dates.
+        </div>
+        <div id="book-error" class="d-none mb-2 p-2 rounded-3 text-center" style="background:rgba(186,26,26,.2);border:2px solid #ba1a1a;color:#ff8080;font-weight:700;font-size:.85rem"></div>
+        <button class="btn-yay-yellow w-100 py-3 mb-3" style="font-size:1.1rem" onclick="bookNow()" id="book-btn">
+          Reserve Now
+        </button>
+        <p class="text-center mb-4" style="color:var(--clr-muted);font-style:italic;font-size:.9rem">You won't be charged yet</p>
+
+        <!-- Price breakdown -->
+        <div id="price-breakdown" style="display:none">
+          <div class="d-flex justify-content-between mb-2" style="color:#d4d4d8">
+            <span class="text-decoration-underline" id="bk-nights-label">—</span>
+            <span id="bk-subtotal">—</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2" style="color:#d4d4d8">
+            <span class="text-decoration-underline">Cleaning fee</span><span>$75</span>
+          </div>
+          <div class="d-flex justify-content-between mb-3" style="color:#d4d4d8">
+            <span class="text-decoration-underline">VacayYay service fee</span>
+            <span id="bk-service">—</span>
+          </div>
+          <hr class="section-divider" style="margin:1rem 0">
+          <div class="d-flex justify-content-between fw-800 text-white" style="font-family:var(--font-headline);font-size:1.15rem">
+            <span>Total</span><span id="bk-total">—</span>
+          </div>
+        </div>
+
+        <!-- Rare find banner -->
+        <div class="d-flex align-items-center gap-3 mt-4 p-3 rounded-3" style="background:rgba(254,77,135,.12);border:2px solid var(--clr-secondary)">
+          <span class="material-symbols-outlined" style="color:var(--clr-secondary);font-size:1.75rem">emoji_events</span>
+          <p class="mb-0" style="font-size:.9rem;color:#d4d4d8"><strong class="text-white">Rare find.</strong> This place is usually booked months in advance.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- Loading state -->
+<div id="loading-state" class="d-flex justify-content-center align-items-center" style="height:60vh">
+  <div class="spinner-yay"></div>
+</div>
+
+<!-- Error state -->
+<div id="error-state" class="d-none text-center py-5">
+  <span class="material-symbols-outlined mb-3" style="font-size:4rem;color:var(--clr-secondary)">error</span>
+  <h2 class="font-headline text-white">Property not found</h2>
+  <a href="/" class="btn-yay-primary mt-3 text-decoration-none">Back to home</a>
+</div>
+
+<!-- Gallery Modal -->
+<div class="modal fade modal-yay" id="galleryModal" tabindex="-1">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title font-headline fw-800">All Photos</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3" id="gallery-modal-grid"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Booking Confirm Modal -->
+<div class="modal fade modal-yay" id="bookModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title font-headline fw-800 text-primary-yay">Booking Confirmed!</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="book-confirm-body"></div>
+      <div class="modal-footer">
+        <button class="btn-yay-yellow" data-bs-dismiss="modal" onclick="location.href='/dashboard'">View My Trips</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Mobile Bottom Nav -->
+<nav class="bottom-nav">
+  <a href="/dashboard" class="bn-item"><span class="material-symbols-outlined">favorite</span>Wishlists</a>
+  <a href="/dashboard" class="bn-item"><span class="material-symbols-outlined">travel_explore</span>Trips</a>
+  <a href="/dashboard" class="bn-item"><span class="material-symbols-outlined">account_circle</span>Profile</a>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/main.js?v=2"></script>
+<script>
+let propData  = null;
+let guestCount = 2;
+const propId  = location.pathname.split('/').pop();
+
+let selectedRating = 0;
+
+const highlightIcons = {
+  'Great location': 'location_on',
+  'Superhost': 'workspace_premium',
+  'Rare find': 'emoji_events',
+  'Top rated': 'star',
+  'Pet friendly': 'pets',
+  'New listing': 'new_releases',
+  'Perfect rating': 'grade',
+  'Northern lights': 'light_mode',
+};
+
+async function loadProperty() {
+  try {
+    const res = await fetch(`/api/properties/${propId}`);
+    if (!res.ok) throw new Error('Not found');
+    propData = await res.json();
+    renderProperty(propData);
+  } catch {
+    document.getElementById('loading-state').classList.add('d-none');
+    document.getElementById('error-state').classList.remove('d-none');
+  }
+}
+
+function renderGallery(p) {
+  const wrap   = document.getElementById('gallery-wrap');
+  const badge  = `<span class="prop-badge ${p.badgeType}" style="position:absolute;top:1rem;left:1rem;z-index:2">${p.badge}</span>`;
+  const imgErr = "this.onerror=null;this.src='https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&auto=format&fit=crop';";
+
+  if (p.images.length > 1) {
+    wrap.innerHTML = `
+      <div class="d-flex gap-3 hide-scrollbar" style="overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:.25rem">
+        ${p.images.map((src, i) => `
+          <div class="position-relative flex-shrink-0" style="flex-basis:88%;max-width:760px;scroll-snap-align:center;border:4px solid #000;border-radius:var(--r-lg);overflow:hidden">
+            ${i === 0 ? badge : ''}
+            <img src="${src}" alt="${p.title}" onerror="${imgErr}" style="width:100%;height:clamp(280px,46vh,460px);object-fit:cover;display:block">
+          </div>`).join('')}
+      </div>
+      <p class="mt-2 mb-0 text-center d-md-none" style="color:var(--clr-subtle);font-size:.8rem">Swipe to see all ${p.images.length} photos →</p>`;
+  } else {
+    wrap.innerHTML = `
+      <div class="position-relative" style="border:4px solid #000;border-radius:var(--r-lg);overflow:hidden">
+        ${badge}
+        <img src="${p.images[0]}" alt="${p.title}" onerror="${imgErr}" style="width:100%;height:clamp(280px,50vh,520px);object-fit:cover;display:block">
+      </div>`;
+  }
+}
+
+function renderProperty(p) {
+  document.title = `VacayYay – ${p.title}`;
+
+  // Header
+  document.getElementById('prop-category').textContent = `Back to ${p.category}`;
+  document.getElementById('prop-title').textContent    = p.title;
+  document.getElementById('prop-rating').textContent   = p.rating;
+  document.getElementById('prop-reviews').textContent  = p.reviews;
+  document.getElementById('prop-location').textContent = p.location;
+
+  // Gallery
+  renderGallery(p);
+
+  // Gallery modal
+  document.getElementById('gallery-modal-grid').innerHTML = p.images.map(src =>
+    `<div class="col-12 col-md-6"><img src="${src}" alt="${p.title}" class="w-100 rounded-3" style="object-fit:cover;height:250px"></div>`
+  ).join('');
+
+  // Host
+  document.getElementById('host-name').textContent  = p.host.name;
+  document.getElementById('host-years').textContent = p.host.years;
+  document.getElementById('host-super').textContent = p.host.superhost ? 'Superhost' : 'Host';
+  if (p.host.superhost) document.getElementById('host-verified').classList.remove('d-none');
+  const hostAvatarEl = document.getElementById('host-avatar');
+  if (p.host.avatar) {
+    hostAvatarEl.src = p.host.avatar;
+    hostAvatarEl.alt = p.host.name;
+  } else {
+    const initial = (p.host.name || '?')[0].toUpperCase();
+    hostAvatarEl.outerHTML = `<div class="rounded-circle d-flex align-items-center justify-content-center fw-900"
+      style="width:4rem;height:4rem;background:#fde047;border:4px solid #fde047;color:#000;font-family:var(--font-headline);font-size:1.5rem;transform:rotate(3deg);box-shadow:4px 4px 0 #000">${initial}</div>`;
+  }
+
+  // Highlights
+  document.getElementById('highlights').innerHTML = (p.highlights || []).map(h => `
+    <div class="d-flex gap-3 align-items-start mb-4">
+      <span class="material-symbols-outlined" style="font-size:1.75rem;color:#fde047;flex-shrink:0">${highlightIcons[h] || 'check_circle'}</span>
+      <div>
+        <h3 class="fw-800 text-white mb-1" style="font-size:1rem">${h}</h3>
+        <p class="mb-0" style="color:var(--clr-muted);font-size:.9rem">This property has been recognized for exceptional quality.</p>
+      </div>
+    </div>`).join('');
+
+  // Description
+  document.getElementById('prop-desc').textContent = p.description;
+  document.getElementById('prop-specs').innerHTML =
+    `<span class="amenity-tag">${p.guests} guests</span>
+     <span class="amenity-tag">${p.bedrooms} bedroom${p.bedrooms!==1?'s':''}</span>
+     <span class="amenity-tag">${p.beds} bed${p.beds!==1?'s':''}</span>
+     <span class="amenity-tag">${p.baths} bath${p.baths!==1?'s':''}</span>`;
+
+  // Amenities
+  document.getElementById('amenities-grid').innerHTML = p.amenities.map(a => `
+    <div class="col">
+      <div class="amenity-row">
+        <div class="amenity-icon"><span class="material-symbols-outlined" style="color:${a.color||'#fff'}">${a.icon}</span></div>
+        <span class="fw-600 text-white">${a.label}</span>
+      </div>
+    </div>`).join('');
+
+  // Booking card
+  document.getElementById('book-price').textContent  = `$${p.price}`;
+  document.getElementById('book-rating').textContent = p.rating;
+
+  // Reviews header counts (will be updated again after loadReviews)
+  document.getElementById('rev-rating').textContent = p.rating || '—';
+  document.getElementById('rev-count').textContent  = p.reviews || 0;
+
+  // Wishlist button
+  updateFavButton();
+
+  // Contact Host button — only for user-listed properties, not your own
+  if (p.user_id && (!APP.user || APP.user.id !== p.user_id)) {
+    document.getElementById('contact-host-btn').classList.remove('d-none');
+  }
+
+  document.getElementById('loading-state').classList.add('d-none');
+  document.getElementById('prop-main').style.display = 'block';
+  updatePriceBreakdown();
+}
+
+function updatePriceBreakdown() {
+  if (!propData) return;
+  const ci = document.getElementById('checkin').value;
+  const co = document.getElementById('checkout').value;
+  if (!ci || !co) return;
+  const nights  = Math.max(1, Math.ceil((new Date(co) - new Date(ci)) / 86400000));
+  const sub     = propData.price * nights;
+  const service = Math.round(sub * 0.12);
+  document.getElementById('bk-nights-label').textContent = `$${propData.price} × ${nights} night${nights!==1?'s':''}`;
+  document.getElementById('bk-subtotal').textContent = `$${sub.toLocaleString()}`;
+  document.getElementById('bk-service').textContent  = `$${service.toLocaleString()}`;
+  document.getElementById('bk-total').textContent    = `$${(sub + 75 + service).toLocaleString()}`;
+  document.getElementById('price-breakdown').style.display = 'block';
+}
+
+function changeGuests(d) {
+  guestCount = Math.max(1, Math.min(propData?.guests || 10, guestCount + d));
+  document.getElementById('guest-display').textContent = `${guestCount} Guest${guestCount!==1?'s':''}`;
+}
+
+function updateFavButton() {
+  if (!propData) return;
+  const saved = APP.wishlist.includes(propData.id);
+  const btn  = document.getElementById('fav-header-btn');
+  const icon = document.getElementById('fav-header-icon');
+  const text = document.getElementById('fav-header-text');
+  icon.textContent = saved ? 'favorite' : 'favorite_border';
+  icon.style.fontVariationSettings = saved ? "'FILL' 1" : "'FILL' 0";
+  text.textContent = saved ? 'Saved' : 'Save';
+  // Make the saved state visually obvious: solid pink button
+  if (saved) {
+    btn.style.background  = 'var(--clr-secondary)';
+    btn.style.borderColor = 'var(--clr-secondary)';
+    btn.style.color       = '#fff';
+  } else {
+    btn.style.background  = '';
+    btn.style.borderColor = '';
+    btn.style.color       = '';
+  }
+}
+
+function toggleFav() {
+  if (!propData) return;
+  toggleWishlist(propData.id, document.getElementById('fav-header-btn'));
+  updateFavButton();
+}
+
+function openGalleryModal() {
+  new bootstrap.Modal(document.getElementById('galleryModal')).show();
+}
+
+async function contactHost() {
+  if (!APP.user) {
+    window.location.href = `/login?next=${encodeURIComponent(location.pathname)}`;
+    return;
+  }
+  try {
+    const res  = await fetch(`/api/properties/${propId}/host-email`, { headers: authHeaders() });
+    const data = await res.json();
+    if (!res.ok || !data.email) return;
+    const subject = encodeURIComponent(`Inquiry about "${propData.title}"`);
+    const body    = encodeURIComponent(`Hi, I found your property "${propData.title}" on VacayYay and I'm interested in booking. Could you share more details?\n\nProperty: ${location.href}`);
+    window.location.href = `mailto:${data.email}?subject=${subject}&body=${body}`;
+  } catch {}
+}
+
+function showBookError(msg) {
+  const el = document.getElementById('book-error');
+  el.textContent = msg;
+  el.classList.remove('d-none');
+}
+
+async function bookNow() {
+  const checkin  = document.getElementById('checkin').value;
+  const checkout = document.getElementById('checkout').value;
+  document.getElementById('book-error').classList.add('d-none');
+  if (!checkin || !checkout) {
+    showBookError('Please select check-in and checkout dates.');
+    return;
+  }
+  if (new Date(checkout) <= new Date(checkin)) {
+    showBookError('Checkout must be after check-in.');
+    return;
+  }
+  const btn = document.getElementById('book-btn');
+  btn.textContent = 'Booking…'; btn.disabled = true;
+  try {
+    const res  = await fetch('/api/bookings', {
+      method: 'POST', headers: authHeaders(),
+      body: JSON.stringify({ propertyId: propData.id, checkin, checkout, guests: guestCount })
+    });
+    const book = await res.json();
+    document.getElementById('book-confirm-body').innerHTML = `
+      <div class="d-flex align-items-center gap-3 mb-4">
+        <img src="${propData.image}" alt="" class="rounded-3" style="width:80px;height:60px;object-fit:cover;border:2px solid #fde047">
+        <div>
+          <div class="fw-800 text-white">${book.property}</div>
+          <div style="color:var(--clr-muted);font-size:.875rem">${book.location}</div>
+        </div>
+      </div>
+      <div class="d-flex gap-4 mb-4">
+        <div><div class="booking-date-label">CHECK-IN</div><div class="fw-700 text-white">${book.checkin}</div></div>
+        <div><div class="booking-date-label">CHECKOUT</div><div class="fw-700 text-white">${book.checkout}</div></div>
+        <div><div class="booking-date-label">NIGHTS</div><div class="fw-700 text-white">${book.nights}</div></div>
+      </div>
+      <div class="p-3 rounded-3" style="background:#3f3f46">
+        <div class="d-flex justify-content-between mb-2 text-white"><span>Subtotal</span><span>${fmt(book.subtotal)}</span></div>
+        <div class="d-flex justify-content-between mb-2 text-white"><span>Cleaning</span><span>${fmt(book.cleaning)}</span></div>
+        <div class="d-flex justify-content-between mb-2 text-white"><span>Service fee</span><span>${fmt(book.serviceFee)}</span></div>
+        <hr style="border-color:#52525b">
+        <div class="d-flex justify-content-between fw-900 text-primary-yay" style="font-family:var(--font-headline);font-size:1.15rem"><span>Total</span><span>${fmt(book.total)}</span></div>
+      </div>
+      <p class="mt-3 mb-0 fw-700" style="color:#4aede8">
+        <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">check_circle</span>
+        Booking ID: ${book.bookingId}
+      </p>`;
+    new bootstrap.Modal(document.getElementById('bookModal')).show();
+  } catch {
+    showBookError('Booking failed. Please try again.');
+  } finally {
+    btn.textContent = 'Reserve Now'; btn.disabled = false;
+  }
+}
+
+// ── Reviews ────────────────────────────────────────────────────────────────
+async function loadReviews() {
+  try {
+    const res  = await fetch(`/api/properties/${propId}/reviews`);
+    const data = await res.json();
+    renderReviews(data.reviews);
+  } catch {
+    document.getElementById('reviews-loading').innerHTML =
+      `<p style="color:var(--clr-secondary);font-size:.9rem">Could not load reviews.</p>`;
+  }
+}
+
+function renderReviews(reviews) {
+  document.getElementById('reviews-loading').classList.add('d-none');
+
+  const grid = document.getElementById('reviews-grid');
+  if (reviews.length) {
+    grid.classList.remove('d-none');
+    grid.innerHTML = reviews.map(r => {
+      const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+      const date  = new Date(r.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+      const ava   = r.avatar
+        ? `<img src="${r.avatar}" alt="${r.name}" class="rounded-circle flex-shrink-0" style="width:2.5rem;height:2.5rem;border:2px solid #fde047;object-fit:cover">`
+        : `<div class="rounded-circle flex-shrink-0 d-flex align-items-center justify-content-center fw-900" style="width:2.5rem;height:2.5rem;background:#fde047;border:2px solid #fde047;color:#000;font-family:var(--font-headline);font-size:1rem">${(r.name||'?')[0].toUpperCase()}</div>`;
+      return `
+      <div class="col">
+        <div class="p-4 rounded-yay-lg" style="background:#27272a;border:2px solid #3f3f46;height:100%">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            ${ava}
+            <div>
+              <div class="fw-800 text-white" style="font-size:.95rem">${r.name}</div>
+              <div style="color:var(--clr-muted);font-size:.85rem">${date}</div>
+            </div>
+            <span style="margin-left:auto;color:#fde047;font-size:1rem;letter-spacing:1px">${stars}</span>
+          </div>
+          <p class="mb-0" style="color:#d4d4d8;font-size:.95rem;line-height:1.6">${r.comment}</p>
+        </div>
+      </div>`;
+    }).join('');
+  } else {
+    document.getElementById('reviews-empty').classList.remove('d-none');
+  }
+
+  // Show correct form state
+  if (!APP.user) {
+    document.getElementById('review-signin').classList.remove('d-none');
+  } else if (reviews.some(r => r.user_id === APP.user.id)) {
+    document.getElementById('already-reviewed').classList.remove('d-none');
+  } else {
+    document.getElementById('review-form-wrap').classList.remove('d-none');
+  }
+}
+
+function hoverStars(val) {
+  document.querySelectorAll('.rev-star').forEach(s => {
+    const v = +s.dataset.v;
+    s.style.color = v <= (val || selectedRating) ? '#fde047' : '#52525b';
+  });
+}
+
+function selectStar(val) {
+  selectedRating = val;
+  hoverStars(val);
+}
+
+async function submitReview() {
+  const comment = document.getElementById('review-comment').value.trim();
+  const errEl   = document.getElementById('review-error');
+  errEl.classList.add('d-none');
+
+  if (!selectedRating) { errEl.textContent = 'Please select a star rating.'; errEl.classList.remove('d-none'); return; }
+  if (!comment)         { errEl.textContent = 'Please write a comment.';      errEl.classList.remove('d-none'); return; }
+
+  const btn = document.getElementById('review-submit-btn');
+  const spn = document.getElementById('review-submit-spinner');
+  btn.disabled = true; spn.classList.remove('d-none');
+
+  try {
+    const res  = await fetch(`/api/properties/${propId}/reviews`, {
+      method: 'POST', headers: authHeaders(),
+      body: JSON.stringify({ rating: selectedRating, comment }),
+    });
+    const data = await res.json();
+    if (!res.ok) { errEl.textContent = data.error || 'Failed to post review.'; errEl.classList.remove('d-none'); return; }
+
+    // Update rating in header
+    document.getElementById('rev-rating').textContent  = data.rating;
+    document.getElementById('rev-count').textContent   = data.reviewCount;
+    document.getElementById('book-rating').textContent = data.rating;
+
+    // Re-fetch and re-render reviews
+    document.getElementById('review-form-wrap').classList.add('d-none');
+    document.getElementById('reviews-grid').classList.add('d-none');
+    document.getElementById('reviews-loading').classList.remove('d-none');
+    document.getElementById('reviews-loading').innerHTML = `<div class="spinner-yay" style="width:2rem;height:2rem;border-width:3px"></div>`;
+    const r2 = await fetch(`/api/properties/${propId}/reviews`);
+    renderReviews((await r2.json()).reviews);
+  } catch {
+    errEl.textContent = 'Network error. Please try again.'; errEl.classList.remove('d-none');
+  } finally {
+    btn.disabled = false; spn.classList.add('d-none');
+  }
+}
+
+let bookedRanges = [];
+
+async function loadBookedDates() {
+  try {
+    const res  = await fetch(`/api/properties/${propId}/booked-dates`);
+    const data = await res.json();
+    bookedRanges = data.bookings || [];
+  } catch {}
+}
+
+function checkConflict() {
+  const ci = document.getElementById('checkin').value;
+  const co = document.getElementById('checkout').value;
+  if (!ci || !co) return;
+  const start = new Date(ci), end = new Date(co);
+  const conflict = bookedRanges.some(b => start < new Date(b.checkout) && end > new Date(b.checkin));
+  document.getElementById('booking-conflict').classList.toggle('d-none', !conflict);
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  // Pull the latest saved spots from the server first so the Save button is accurate
+  if (APP.token) { try { await syncWishlist(); } catch {} }
+  loadProperty();
+  loadReviews();
+  loadBookedDates();
+  const onDateChange = () => { updatePriceBreakdown(); checkConflict(); };
+  document.getElementById('checkin').addEventListener('change',  onDateChange);
+  document.getElementById('checkout').addEventListener('change', onDateChange);
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('checkin').min  = today;
+  document.getElementById('checkout').min = today;
+});
+</script>
+</body>
+</html>

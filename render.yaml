@@ -1,0 +1,12 @@
+# Render Blueprint — lets you deploy with one click via "New + > Blueprint"
+# instead of configuring the service by hand.
+services:
+  - type: web
+    name: vacayyay
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: JWT_SECRET
+        generateValue: true   # Render generates a strong random secret for you
